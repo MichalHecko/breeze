@@ -1,0 +1,119 @@
+// =============================================================================
+// Breeze – design tokens (source of truth: docs/breeze/tokens.json)
+//
+// The only place with color and scale values. It generates:
+//   1. Breeze CSS variables (--bs-color-*, --bs-text-*, --bs-radius-xl …)
+//   2. Bootstrap token maps (primary theme, backgrounds, text colors, borders …)
+// Emits no CSS.
+// =============================================================================
+
+@use "sass:list";
+@use "sass:map";
+@use "sass:string";
+
+/// Colors as pairs (light theme, dark theme).
+/// @type Map
+$colors: (
+  "canvas":         (#f5f8fd, #0d131e),
+  "surface":        (#ffffff, #151d2b),
+  "surface-sunken": (#eff2f6, #1c2534),
+  "primary-soft":   (#e8f0fe, #142a4d),
+  "line":           (#e2e7ef, #273246),
+  "line-strong":    (#7d889b, #6d7a91),
+  "ink":            (#1a2438, #e8eef8),
+  "ink-muted":      (#5a667b, #9ba8bd),
+  "primary":        (#0b63e5, #5c9dff),
+  "primary-hover":  (#0a55c6, #82b4ff),
+  "on-primary":     (#ffffff, #0b1424),
+  "dusk":           (#5a78a3, #809dc8),
+  "peach":          (#f6dccf, #dcae99),
+  "on-peach":       (#1a2438, #1a2438),
+  "success":        (#12795a, #4fc99b),
+  "success-soft":   (#e3f4ee, #10302a),
+  "warning":        (#955700, #f0b358),
+  "warning-soft":   (#fdf1dc, #33260f),
+  "danger":         (#c0283a, #ff8b95),
+  "danger-soft":    (#fde8ea, #3a1a20),
+  "focus-ring":     (#85b1f2, #487ac7),
+) !default;
+
+/// Fonts.
+$font-sans: "Figtree, 'Segoe UI', system-ui, -apple-system, sans-serif" !default;
+$font-display: "'Titillium Web', 'Segoe UI', system-ui, sans-serif" !default;
+
+/// Spacing step (Tailwind --spacing). 1 = 4 px.
+$spacing: .25rem !default;
+
+/// Tailwind radius names used by Breeze (aliases of the Bootstrap 6 scale
+/// --radius-0 … --radius-9, which Bootstrap provides itself).
+$radii: (
+  "xs":  .125rem,
+  "sm":  .25rem,
+  "md":  .375rem,
+  "lg":  .5rem,
+  "xl":  .75rem,
+  "2xl": 1rem,
+  "3xl": 1.5rem,
+  "4xl": 2rem,
+) !default;
+
+/// Type scale: (size, line height) – the Bootstrap 6 scale, fluid from lg up.
+$text: (
+  "xs":   (.75rem, 1.25),
+  "sm":   (.875rem, 1.5),
+  "md":   (1rem, 1.5),
+  "base": (1rem, 1.5),
+  "lg":   (string.unquote("clamp(1.125rem, 1rem + .625vw, 1.25rem)"), 1.5),
+  "xl":   (string.unquote("clamp(1.5rem, 1.1rem + .75vw, 1.75rem)"), string.unquote("calc(2.5 / 1.75)")),
+  "2xl":  (string.unquote("clamp(1.75rem, 1.3rem + 1vw, 2rem)"), string.unquote("calc(3 / 2.25)")),
+  "3xl":  (string.unquote("clamp(2rem, 1.5rem + 1.875vw, 2.5rem)"), 1.2),
+  "4xl":  (string.unquote("clamp(2.25rem, 1.75rem + 2.5vw, 3rem)"), 1.1),
+  "5xl":  (string.unquote("clamp(3rem, 2rem + 5vw, 4rem)"), 1.1),
+  "6xl":  (string.unquote("clamp(3.75rem, 2.5rem + 6.25vw, 5rem)"), 1),
+) !default;
+
+/// Shadows: Bootstrap 6 geometry, ink-tinted; the color switches with the
+/// theme via light-dark().
+$shadows: (
+  "xs": "0 .0625rem .125rem light-dark(#1a24380a, #00000018)",
+  "sm": "0 .0625rem .125rem light-dark(#1a24380a, #00000018), 0 .125rem .375rem -.0625rem light-dark(#1a24380d, #0000001f)",
+  "md": "0 .125rem .25rem -.0625rem light-dark(#1a24380a, #00000018), 0 .375rem .75rem -.125rem light-dark(#1a24380d, #0000001f), 0 .75rem 1.5rem -.25rem light-dark(#1a24380f, #00000025)",
+  "lg": "0 .125rem .375rem -.0625rem light-dark(#1a24380d, #0000001f), 0 .375rem 1rem -.1875rem light-dark(#1a24380f, #00000025), 0 .75rem 2rem -.375rem light-dark(#1a243812, #0000002b), 0 1.5rem 3.5rem -.75rem light-dark(#1a243814, #00000031)",
+  "xl": "0 .1875rem .5rem -.0625rem light-dark(#1a24380d, #0000001f), 0 .5rem 1.25rem -.1875rem light-dark(#1a24380f, #00000025), 0 1rem 2.5rem -.375rem light-dark(#1a243812, #0000002b), 0 2rem 5rem -.75rem light-dark(#1a243817, #00000037)",
+) !default;
+
+/// Light and dark value of a color as one light-dark() value.
+/// @param {String} $name - color name from $colors
+/// @return {String}
+@function ld($name) {
+  @if not map.has-key($colors, $name) {
+    @error "Breeze has no color `#{$name}`.";
+  }
+  $pair: map.get($colors, $name);
+  @return light-dark(list.nth($pair, 1), list.nth($pair, 2));
+}
+
+/// Reference to a Breeze color CSS variable (PostCSS adds the --bs- prefix).
+/// @param {String} $name - color name from $colors
+/// @return {String}
+@function color($name) {
+  @if not map.has-key($colors, $name) and $name != "link" {
+    @error "Breeze has no color `#{$name}`.";
+  }
+  @return var(--color-#{$name});
+}
+
+/// Transparent version of a color, e.g. the focus glow.
+/// @param {String} $name - color name
+/// @param {Number} $amount - opacity in percent
+/// @return {String}
+@function alpha($name, $amount) {
+  @return color-mix(in oklab, color($name) $amount, transparent);
+}
+
+/// Spacing step, e.g. space(4) = 1rem.
+/// @param {Number} $step
+/// @return {Number}
+@function space($step) {
+  @return $spacing * $step;
+}

@@ -1,0 +1,9 @@
+// =============================================================================
+// Breeze settings
+// Can be changed when loading: @use "breeze" with ($auto-dark-mode: true);
+// =============================================================================
+
+/// false = dark theme only manually via data-bs-theme="dark" (as in Breeze).
+/// true  = dark theme also automatically following the system (as in Bootstrap).
+/// @type Bool
+$auto-dark-mode: false !default;

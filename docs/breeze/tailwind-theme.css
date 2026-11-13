@@ -1,0 +1,257 @@
+/* Breeze — téma pre Tailwind CSS v4 postavená na Bootstrap 6 (vygenerované z tokens.json)
+
+   Použitie v projekte:
+     @import "tailwindcss";
+     @import "./breeze-theme.css";
+     @source "./cesta/k/breeze-bundle.js";   (ak používate React komponenty Breeze)
+
+   Písma načítajte v <head>:
+     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700&family=Titillium+Web:wght@400;600;700&display=swap">
+
+   Z Bootstrap 6 (6.0.0-alpha.1): breakpointy, kontajnery, 12-stĺpcová mriežka s medzerami, spacery, škála
+   rádiusov, škála písma, geometria tieňov, vrstvy (z-index), veľkosti ovládacích prvkov a fokus.
+   Motor ostáva Tailwind: p-*, m-*, gap-*, w-*, h-* sú násobky --spacing (0,25rem).
+   Tmavá téma: data-theme="dark" alebo class="dark" na <html>; varianty dark: fungujú pre oboje. */
+
+@custom-variant dark (&:where([data-theme=dark], [data-theme=dark] *, .dark, .dark *));
+
+@theme {
+  --font-sans: Figtree, "Segoe UI", system-ui, -apple-system, sans-serif;
+  --font-display: "Titillium Web", "Segoe UI", system-ui, sans-serif;
+
+  /* Farby Breeze */
+  --color-canvas: #f5f8fd;
+  --color-surface: #ffffff;
+  --color-surface-sunken: #eff2f6;
+  --color-primary-soft: #e8f0fe;
+  --color-line: #e2e7ef;
+  --color-line-strong: #7d889b;
+  --color-ink: #1a2438;
+  --color-ink-muted: #5a667b;
+  --color-primary: #0b63e5;
+  --color-primary-hover: #0a55c6;
+  --color-on-primary: #ffffff;
+  --color-link: var(--color-primary);
+  --color-dusk: #5a78a3;
+  --color-peach: #f6dccf;
+  --color-on-peach: #1a2438;
+  --color-success: #12795a;
+  --color-success-soft: #e3f4ee;
+  --color-warning: #955700;
+  --color-warning-soft: #fdf1dc;
+  --color-danger: #c0283a;
+  --color-danger-soft: #fde8ea;
+  --color-focus-ring: #85b1f2;
+
+  /* Tiene: geometria Bootstrap 6, hodnoty sa menia s témou cez --vk-shadow-* */
+  --shadow-xs: var(--vk-shadow-xs);
+  --shadow-sm: var(--vk-shadow-sm);
+  --shadow-md: var(--vk-shadow-md);
+  --shadow-lg: var(--vk-shadow-lg);
+  --shadow-xl: var(--vk-shadow-xl);
+
+  /* Spacery Bootstrap 6 (mriežka g-*, gx-*, gy-*) */
+  --spacer: 1rem;
+  --spacer-0: 0;
+  --spacer-1: 0.25rem;
+  --spacer-2: 0.375rem;
+  --spacer-3: 0.5rem;
+  --spacer-4: 0.75rem;
+  --spacer-5: 1rem;
+  --spacer-6: 1.25rem;
+  --spacer-7: 1.5rem;
+  --spacer-8: 1.75rem;
+  --spacer-9: 2rem;
+  --spacer-10: 2.25rem;
+  --spacer-11: 2.5rem;
+  --spacer-12: 3rem;
+
+  /* Rádiusy Bootstrap 6 (rounded-0 … rounded-9, rounded-pill) a aliasy Tailwindu */
+  --radius-0: 0;
+  --radius-1: 0.125rem;
+  --radius-2: 0.1875rem;
+  --radius-3: 0.25rem;
+  --radius-4: 0.375rem;
+  --radius-5: 0.5rem;
+  --radius-6: 0.625rem;
+  --radius-7: 0.75rem;
+  --radius-8: 0.875rem;
+  --radius-9: 1rem;
+  --radius-pill: 50rem;
+  --radius-xs: 0.125rem;
+  --radius-sm: 0.25rem;
+  --radius-md: 0.375rem;
+  --radius-lg: 0.5rem;
+  --radius-xl: 0.75rem;
+  --radius-2xl: 1rem;
+  --radius-3xl: 1.5rem;
+  --radius-4xl: 2rem;
+
+  /* Škála písma Bootstrap 6 */
+  --text-xs: 0.75rem;
+  --text-xs--line-height: 1.25;
+  --text-sm: 0.875rem;
+  --text-sm--line-height: 1.5;
+  --text-md: 1rem;
+  --text-md--line-height: 1.5;
+  --text-base: 1rem;
+  --text-base--line-height: 1.5;
+  --text-lg: clamp(1.125rem, 1rem + .625vw, 1.25rem);
+  --text-lg--line-height: 1.5;
+  --text-xl: clamp(1.5rem, 1.1rem + .75vw, 1.75rem);
+  --text-xl--line-height: calc(2.5 / 1.75);
+  --text-2xl: clamp(1.75rem, 1.3rem + 1vw, 2rem);
+  --text-2xl--line-height: calc(3 / 2.25);
+  --text-3xl: clamp(2rem, 1.5rem + 1.875vw, 2.5rem);
+  --text-3xl--line-height: 1.2;
+  --text-4xl: clamp(2.25rem, 1.75rem + 2.5vw, 3rem);
+  --text-4xl--line-height: 1.1;
+  --text-5xl: clamp(3rem, 2rem + 5vw, 4rem);
+  --text-5xl--line-height: 1.1;
+  --text-6xl: clamp(3.75rem, 2.5rem + 6.25vw, 5rem);
+  --text-6xl--line-height: 1;
+}
+
+@layer base {
+  :root {
+    --vk-shadow-xs: 0 0.0625rem 0.125rem #1a24380a;
+    --vk-shadow-sm: 0 0.0625rem 0.125rem #1a24380a, 0 0.125rem 0.375rem -0.0625rem #1a24380d;
+    --vk-shadow-md: 0 0.125rem 0.25rem -0.0625rem #1a24380a, 0 0.375rem 0.75rem -0.125rem #1a24380d, 0 0.75rem 1.5rem -0.25rem #1a24380f;
+    --vk-shadow-lg: 0 0.125rem 0.375rem -0.0625rem #1a24380d, 0 0.375rem 1rem -0.1875rem #1a24380f, 0 0.75rem 2rem -0.375rem #1a243812, 0 1.5rem 3.5rem -0.75rem #1a243814;
+    --vk-shadow-xl: 0 0.1875rem 0.5rem -0.0625rem #1a24380d, 0 0.5rem 1.25rem -0.1875rem #1a24380f, 0 1rem 2.5rem -0.375rem #1a243812, 0 2rem 5rem -0.75rem #1a243817;
+
+    /* Layout Bootstrap 6 */
+    --container-max-sm: 540px;
+    --container-max-md: 720px;
+    --container-max-lg: 960px;
+    --container-max-xl: 1200px;
+    --container-max-2xl: 1440px;
+    --container-padding-x: 1.5rem;
+    --grid-columns: 12;
+    --grid-row-columns: 6;
+    --grid-gutter-x: 1.5rem;
+    --grid-gutter-y: 0;
+    --z-n1: -1;
+    --z-menu: 1000;
+    --z-sticky: 1010;
+    --z-fixed: 1020;
+    --z-drawer: 1030;
+    --z-dialog: 1040;
+    --z-popover: 1050;
+    --z-tooltip: 1060;
+    --z-toast: 1070;
+    --btn-input-min-height: 2.375rem;
+    --btn-input-sm-min-height: 2rem;
+    --btn-input-lg-min-height: 2.75rem;
+    --btn-input-xs-min-height: 1.5rem;
+    --btn-input-padding-x: 0.75rem;
+    --btn-input-padding-y: 0.375rem;
+    --vk-field-height: 3rem;
+    --vk-button-height: 2.75rem;
+    --focus-ring-width: 3px;
+    --focus-ring-offset: 1px;
+  }
+
+  [data-theme="dark"],
+  .dark {
+    --color-canvas: #0d131e;
+    --color-surface: #151d2b;
+    --color-surface-sunken: #1c2534;
+    --color-primary-soft: #142a4d;
+    --color-line: #273246;
+    --color-line-strong: #6d7a91;
+    --color-ink: #e8eef8;
+    --color-ink-muted: #9ba8bd;
+    --color-primary: #5c9dff;
+    --color-primary-hover: #82b4ff;
+    --color-on-primary: #0b1424;
+    --color-link: var(--color-primary);
+    --color-dusk: #809dc8;
+    --color-peach: #dcae99;
+    --color-success: #4fc99b;
+    --color-success-soft: #10302a;
+    --color-warning: #f0b358;
+    --color-warning-soft: #33260f;
+    --color-danger: #ff8b95;
+    --color-danger-soft: #3a1a20;
+    --color-focus-ring: #487ac7;
+
+    --vk-shadow-xs: 0 0.0625rem 0.125rem #00000018;
+    --vk-shadow-sm: 0 0.0625rem 0.125rem #00000018, 0 0.125rem 0.375rem -0.0625rem #0000001f;
+    --vk-shadow-md: 0 0.125rem 0.25rem -0.0625rem #00000018, 0 0.375rem 0.75rem -0.125rem #0000001f, 0 0.75rem 1.5rem -0.25rem #00000025;
+    --vk-shadow-lg: 0 0.125rem 0.375rem -0.0625rem #0000001f, 0 0.375rem 1rem -0.1875rem #00000025, 0 0.75rem 2rem -0.375rem #0000002b, 0 1.5rem 3.5rem -0.75rem #00000031;
+    --vk-shadow-xl: 0 0.1875rem 0.5rem -0.0625rem #0000001f, 0 0.5rem 1.25rem -0.1875rem #00000025, 0 1rem 2.5rem -0.375rem #0000002b, 0 2rem 5rem -0.75rem #00000037;
+  }
+}
+
+/* Bootstrap 6 – layout pre Tailwind v4: breakpointy, kontajnery, 12-stĺpcová mriežka s medzerami, vrstvy, fokus. */
+@theme {
+  --breakpoint-sm: 36rem;
+  --breakpoint-md: 48rem;
+  --breakpoint-lg: 64rem;
+  --breakpoint-xl: 80rem;
+  --breakpoint-2xl: 96rem;
+}
+
+@utility container {
+  --gutter-x: var(--container-padding-x, 1.5rem);
+  --gutter-y: 0;
+  width: 100%;
+  max-width: 100%;
+  margin-inline: auto;
+  padding-inline: calc(var(--gutter-x) * 0.5);
+  @media (width >= 36rem) { max-width: var(--container-max-sm, 540px); }
+  @media (width >= 48rem) { max-width: var(--container-max-md, 720px); }
+  @media (width >= 64rem) { max-width: var(--container-max-lg, 960px); }
+  @media (width >= 80rem) { max-width: var(--container-max-xl, 1200px); }
+  @media (width >= 96rem) { max-width: var(--container-max-2xl, 1440px); }
+}
+@utility container-fluid {
+  --gutter-x: var(--container-padding-x, 1.5rem);
+  --gutter-y: 0;
+  width: 100%;
+  margin-inline: auto;
+  padding-inline: calc(var(--gutter-x) * 0.5);
+}
+
+@utility row {
+  --gutter-x: var(--grid-gutter-x, 1.5rem);
+  --gutter-y: var(--grid-gutter-y, 0);
+  display: flex;
+  flex-wrap: wrap;
+  margin-inline: calc(var(--gutter-x) * -0.5);
+  margin-top: calc(var(--gutter-y) * -1);
+  & > * {
+    box-sizing: border-box;
+    flex-shrink: 0;
+    width: 100%;
+    max-width: 100%;
+    padding-inline: calc(var(--gutter-x) * 0.5);
+    margin-top: var(--gutter-y);
+  }
+}
+@utility col { flex: 1 0 0; }
+@utility col-auto { flex: 0 0 auto; width: auto; }
+@utility col-* { flex: 0 0 auto; width: calc(100% * --value(integer) / 12); }
+@utility offset-* { margin-inline-start: calc(100% * --value(integer) / 12); }
+@utility row-cols-auto { & > * { flex: 0 0 auto; width: auto; } }
+@utility row-cols-* { & > * { flex: 0 0 auto; width: calc(100% / --value(integer)); } }
+@utility g-* { --gutter-x: --value(--spacer-*); --gutter-y: --value(--spacer-*); }
+@utility gx-* { --gutter-x: --value(--spacer-*); }
+@utility gy-* { --gutter-y: --value(--spacer-*); }
+
+@utility z-menu { z-index: var(--z-menu, 1000); }
+@utility z-sticky { z-index: var(--z-sticky, 1010); }
+@utility z-fixed { z-index: var(--z-fixed, 1020); }
+@utility z-drawer { z-index: var(--z-drawer, 1030); }
+@utility z-dialog { z-index: var(--z-dialog, 1040); }
+@utility z-popover { z-index: var(--z-popover, 1050); }
+@utility z-tooltip { z-index: var(--z-tooltip, 1060); }
+@utility z-toast { z-index: var(--z-toast, 1070); }
+
+@utility focus-ring {
+  &:focus-visible {
+    outline: var(--focus-ring-width, 3px) solid var(--color-focus-ring);
+    outline-offset: var(--focus-ring-offset, 1px);
+  }
+}

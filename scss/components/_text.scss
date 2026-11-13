@@ -1,0 +1,107 @@
+// Ported from Breeze for Tailwind – same classes in both variants.
+/* ==========================================================================
+   Text – Breeze type styles as classes
+   Use when the visual level does not match the semantic heading
+   (e.g. <h2 class="bz-heading"> for a card heading).
+   ========================================================================== */
+
+@layer custom {
+  /* Intro heading – landing or welcome screen; larger than the page heading. */
+  .bz-display {
+    margin: 0;
+    color: var(--color-ink);
+    font-family: var(--font-display);
+    font-size: var(--text-4xl);
+    font-weight: var(--font-weight-semibold);
+    line-height: var(--text-4xl--line-height);
+    letter-spacing: var(--tracking-tight);
+  }
+
+  /* Page heading – once per screen (= h1). */
+  .bz-page-title {
+    margin: 0;
+    color: var(--color-ink);
+    font-family: var(--font-display);
+    font-size: var(--text-3xl);
+    font-weight: var(--font-weight-semibold);
+    line-height: var(--text-3xl--line-height);
+    letter-spacing: normal;
+  }
+
+  /* Form, panel or dialog heading (= h2). */
+  .bz-title {
+    margin: 0;
+    color: var(--color-ink);
+    font-family: var(--font-display);
+    font-size: var(--text-2xl);
+    font-weight: var(--font-weight-semibold);
+    line-height: var(--text-2xl--line-height);
+    letter-spacing: normal;
+  }
+
+  /* Card heading (= h3). */
+  .bz-heading {
+    margin: 0;
+    color: var(--color-ink);
+    font-family: var(--font-display);
+    font-size: var(--text-xl);
+    font-weight: var(--font-weight-semibold);
+    line-height: var(--text-xl--line-height);
+    letter-spacing: normal;
+  }
+
+  /* Form section heading (= h4); also the total amount. */
+  .bz-section-title {
+    margin: 0;
+    color: var(--color-ink);
+    font-family: var(--font-display);
+    font-size: var(--text-lg);
+    font-weight: var(--font-weight-semibold);
+    line-height: var(--text-lg--line-height);
+    letter-spacing: normal;
+  }
+
+  /* Group subheading inside a card. */
+  .bz-subheading {
+    margin: 0;
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    font-size: var(--text-base);
+    font-weight: var(--font-weight-semibold);
+    line-height: var(--text-base--line-height);
+  }
+
+  /* Lead paragraph below a heading. */
+  .bz-lead {
+    margin: 0;
+    color: var(--color-ink-muted);
+    font-size: var(--text-lg);
+    line-height: var(--text-lg--line-height);
+  }
+
+  /* Metadata and small labels. */
+  .bz-caption {
+    font-size: var(--text-xs);
+    font-weight: var(--font-weight-semibold);
+    line-height: var(--text-xs--line-height);
+    letter-spacing: var(--tracking-wide);
+  }
+
+  /* Line icon 20 px, 1.5 px stroke, color from text.
+     <svg class="bz-icon" viewBox="0 0 20 20" aria-hidden="true">…</svg> */
+  .bz-icon {
+    flex-shrink: 0;
+    width: 1.25rem;
+    height: 1.25rem;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.5;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  .bz-icon--sm {
+    width: 1rem;
+    height: 1rem;
+  }
+}

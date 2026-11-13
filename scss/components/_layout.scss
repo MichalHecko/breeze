@@ -1,0 +1,198 @@
+// Ported from Breeze for Tailwind – same classes in both variants.
+/* ==========================================================================
+   Layout – application shell
+   App: page margins and content up to 70 rem (1120 px). On top a bar with
+   the brand and navigation (.bz-segmented--inline), below it the page header.
+
+   <body>
+     <div class="bz-app">
+       <div class="bz-app__container">
+         <header class="bz-app__bar">
+           <a class="bz-brand" href="/"><span class="bz-brand__mark">…icon…</span>Company car</a>
+           <nav class="bz-segmented bz-segmented--inline" aria-label="Main navigation">…</nav>
+         </header>
+         <main class="bz-app__main">
+           <header class="bz-page-header">
+             <h1>Logbook overview</h1>
+             <p class="bz-lead">Choose a car and a month.</p>
+           </header>
+           … cards …
+         </main>
+       </div>
+     </div>
+   </body>
+
+   Split: side panel with section navigation + main content (long form
+   pattern). Side by side from 768 px (md), stacked otherwise.
+   ========================================================================== */
+
+@layer custom {
+  .bz-app {
+    box-sizing: border-box;
+    min-height: 100vh;
+    min-height: 100dvh;
+    padding: calc(var(--spacing) * 10) clamp(calc(var(--spacing) * 4), 4vw, calc(var(--spacing) * 12)) calc(var(--spacing) * 16);
+    background-color: var(--color-canvas);
+    color: var(--color-ink);
+  }
+
+  .bz-app__container {
+    display: flex;
+    flex-direction: column;
+    gap: calc(var(--spacing) * 8);
+    max-width: 70rem;
+    margin: 0 auto;
+  }
+
+  .bz-app__bar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: calc(var(--spacing) * 4) calc(var(--spacing) * 6);
+  }
+
+  .bz-app__main {
+    display: flex;
+    flex-direction: column;
+    gap: calc(var(--spacing) * 8);
+    min-width: 0;
+  }
+
+  /* App brand: icon in a tinted square + name in the display font. */
+  .bz-brand {
+    display: inline-flex;
+    align-items: center;
+    gap: calc(var(--spacing) * 3);
+    color: var(--color-ink);
+    font-family: var(--font-display);
+    font-size: var(--text-xl);
+    font-weight: var(--font-weight-semibold);
+    line-height: var(--text-xl--line-height);
+    text-decoration: none;
+  }
+
+  a.bz-brand:hover {
+    color: var(--color-ink);
+  }
+
+  .bz-brand__mark {
+    flex-shrink: 0;
+    display: grid;
+    place-items: center;
+    width: calc(var(--spacing) * 10);
+    height: calc(var(--spacing) * 10);
+    border-radius: var(--radius-xl);
+    background-color: var(--color-primary-soft);
+    color: var(--color-primary);
+  }
+
+  .bz-brand__mark > svg {
+    width: 1.25rem;
+    height: 1.25rem;
+  }
+
+  /* Page header: heading + lead paragraph. */
+  .bz-page-header {
+    display: flex;
+    flex-direction: column;
+    gap: calc(var(--spacing) * 2);
+  }
+
+  /* ------------------------------------------------------------------------
+     Split – side panel + main content
+     ------------------------------------------------------------------------ */
+
+  .bz-split {
+    box-sizing: border-box;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: calc(var(--spacing) * 2);
+    max-width: 64rem;
+    margin-inline: auto;
+    padding: calc(var(--spacing) * 2);
+    border-radius: var(--radius-3xl);
+    background-color: var(--color-surface-sunken);
+  }
+
+  .bz-split__aside {
+    display: flex;
+    flex-direction: column;
+    gap: calc(var(--spacing) * 8);
+    min-width: 0;
+    padding: calc(var(--spacing) * 6);
+  }
+
+  .bz-split__main {
+    box-sizing: border-box;
+    min-width: 0;
+    padding: calc(var(--spacing) * 10) clamp(calc(var(--spacing) * 5), 4vw, calc(var(--spacing) * 10));
+    border-radius: var(--radius-2xl);
+    background-color: var(--color-surface);
+    box-shadow: var(--shadow-md);
+  }
+
+  @media (width >= 48rem) {
+    .bz-split {
+      grid-template-columns: 15rem minmax(0, 1fr);
+    }
+
+    .bz-split__aside {
+      position: sticky;
+      top: calc(var(--spacing) * 6);
+      align-self: start;
+    }
+  }
+
+  /* ------------------------------------------------------------------------
+     Side nav – section navigation in the side panel
+     <nav class="bz-side-nav" aria-label="Form sections">
+       <a class="bz-side-nav__item" href="#personal" aria-current="true">…</a>
+     </nav>
+     ------------------------------------------------------------------------ */
+
+  .bz-side-nav {
+    display: flex;
+    flex-direction: column;
+    gap: calc(var(--spacing) * 1);
+  }
+
+  .bz-side-nav__item {
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    gap: calc(var(--spacing) * 3);
+    height: calc(var(--spacing) * 11);
+    padding: 0 calc(var(--spacing) * 3);
+    border-radius: var(--radius-xl);
+    color: var(--color-ink-muted);
+    font-size: var(--text-base);
+    line-height: var(--text-base--line-height);
+    text-decoration: none;
+    transition-property: color, background-color;
+    transition-duration: 150ms;
+    transition-timing-function: var(--default-transition-timing-function);
+  }
+
+  .bz-side-nav__item:hover {
+    color: var(--color-ink);
+  }
+
+  .bz-side-nav__item:focus-visible {
+    outline: var(--focus-ring-width) solid var(--color-focus-ring);
+    outline-offset: var(--focus-ring-offset);
+  }
+
+  .bz-side-nav__item[aria-current]:not([aria-current="false"]) {
+    background-color: var(--color-surface);
+    color: var(--color-ink);
+    font-weight: var(--font-weight-medium);
+    box-shadow: var(--shadow-xs);
+  }
+
+  .bz-side-nav__item > svg {
+    flex-shrink: 0;
+    width: 1.25rem;
+    height: 1.25rem;
+  }
+}

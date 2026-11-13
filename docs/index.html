@@ -1,0 +1,658 @@
+<!doctype html>
+<html lang="en" data-bs-theme="light">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Breeze for Bootstrap 6 – components</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700&family=Titillium+Web:wght@400;600;700&display=swap">
+  <link rel="stylesheet" href="../dist/breeze.css">
+  <style>
+    /* Styles for this documentation only (docs-*). Components are plain Breeze. */
+    .docs-layout { display: grid; gap: 2rem; }
+    .docs-nav { display: none; }
+    @media (width >= 64rem) {
+      .docs-layout { grid-template-columns: 12rem minmax(0, 1fr); align-items: start; }
+      .docs-nav { display: flex; position: sticky; top: 1.5rem; }
+    }
+    .docs-nav .bz-side-nav__item { height: 2.5rem; font-size: var(--bs-text-sm); }
+    .card[id] { scroll-margin-top: 1.5rem; }
+    .docs-group { display: flex; flex-direction: column; gap: .75rem; min-width: 0; }
+    .docs-group > h3 { margin: 0; }
+    .docs-demo { padding: 1.5rem; border: 1px solid var(--bs-color-line); border-radius: var(--bs-radius-2xl); background-color: var(--bs-color-surface); }
+    .docs-demo--canvas { background-color: var(--bs-color-canvas); }
+    .docs-code > summary { display: inline-flex; align-items: center; gap: .375rem; color: var(--bs-color-link); font-size: var(--bs-text-sm); font-weight: var(--bs-font-weight-medium); cursor: pointer; list-style: none; }
+    .docs-code > summary::-webkit-details-marker { display: none; }
+    .docs-code > summary::before { content: "▸"; transition: transform 150ms; }
+    .docs-code[open] > summary::before { transform: rotate(90deg); }
+    .docs-pre { margin: .75rem 0 0; padding: 1rem 1.25rem; overflow-x: auto; border-radius: var(--bs-radius-xl); background-color: var(--bs-color-surface-sunken); color: var(--bs-color-ink); font-family: var(--bs-font-mono); font-size: .8125rem; line-height: 1.6; }
+    .docs-prose { display: flex; flex-direction: column; gap: .75rem; max-width: 42rem; }
+    .docs-prose p { margin: 0; }
+    .docs-prose code, .docs-var { padding: .0625rem .375rem; border-radius: var(--bs-radius-md); background-color: var(--bs-color-surface-sunken); color: var(--bs-color-ink-muted); font-family: var(--bs-font-mono); font-size: .8125rem; }
+    .docs-swatches { display: grid; grid-template-columns: repeat(auto-fill, minmax(10.5rem, 1fr)); gap: 1.25rem 1rem; }
+    .docs-swatch { display: flex; flex-direction: column; gap: .375rem; min-width: 0; }
+    .docs-swatch__chip { height: 3.5rem; border: 1px solid var(--bs-color-line); border-radius: var(--bs-radius-xl); }
+    .docs-swatch__name { font-size: var(--bs-text-sm); font-weight: var(--bs-font-weight-semibold); }
+    .docs-swatch .docs-var { align-self: flex-start; overflow-wrap: anywhere; }
+    .docs-swatch__value { color: var(--bs-color-ink-muted); font-size: var(--bs-text-xs); }
+    .docs-cell { padding: .75rem 1rem; border-radius: var(--bs-radius-xl); background-color: var(--bs-color-surface); box-shadow: var(--bs-shadow-xs); font-size: var(--bs-text-sm); }
+    .docs-type-row { display: grid; gap: .25rem 1.5rem; padding-block: 1rem; border-bottom: 1px solid var(--bs-color-line); }
+    .docs-type-row > code { justify-self: start; }
+    .docs-type-row > :last-child { margin: 0; }
+    .docs-type-row:first-child { padding-top: 0; }
+    .docs-type-row:last-child { padding-bottom: 0; border-bottom: 0; }
+    @media (width >= 48rem) { .docs-type-row { grid-template-columns: 11rem minmax(0, 1fr); align-items: baseline; } }
+  </style>
+</head>
+<body>
+<div class="bz-app">
+  <div class="bz-app__container">
+
+    <header class="bz-app__bar">
+      <a class="bz-brand" href="#">
+        <span class="bz-brand__mark">
+          <svg class="bz-icon" viewBox="0 0 20 20" aria-hidden="true"><path d="M3 7.5h8.5a2.5 2.5 0 1 0-2.5-2.5M3 10.5h11.5a2.5 2.5 0 1 1-2.5 2.5M3 13.5h5"/></svg>
+        </span>
+        Breeze
+      </a>
+      <fieldset class="bz-segmented bz-segmented--inline" aria-label="Theme">
+        <label class="bz-segmented__item"><input type="radio" name="docs-theme" value="light" checked> Light theme</label>
+        <label class="bz-segmented__item"><input type="radio" name="docs-theme" value="dark"> Dark theme</label>
+      </fieldset>
+    </header>
+
+    <div class="docs-layout">
+      <nav class="bz-side-nav docs-nav" aria-label="Documentation contents">
+        <a class="bz-side-nav__item" href="#usage">Usage</a>
+        <a class="bz-side-nav__item" href="#colors">Colors</a>
+        <a class="bz-side-nav__item" href="#typography">Typography</a>
+        <a class="bz-side-nav__item" href="#buttons">Buttons</a>
+        <a class="bz-side-nav__item" href="#badges">Badges</a>
+        <a class="bz-side-nav__item" href="#fields">Text fields</a>
+        <a class="bz-side-nav__item" href="#choices">Choices</a>
+        <a class="bz-side-nav__item" href="#progress">Progress and steps</a>
+        <a class="bz-side-nav__item" href="#cards">Cards</a>
+        <a class="bz-side-nav__item" href="#summary">Summary</a>
+        <a class="bz-side-nav__item" href="#table">Table</a>
+        <a class="bz-side-nav__item" href="#alerts">Alerts</a>
+        <a class="bz-side-nav__item" href="#form">Form</a>
+        <a class="bz-side-nav__item" href="#layout">Layout</a>
+      </nav>
+
+      <main class="bz-app__main">
+        <header class="bz-page-header">
+          <h1 class="mb-0">Breeze for Bootstrap 6</h1>
+          <p class="bz-lead">The Breeze design system as a theme for Bootstrap 6. Classes and JavaScript come from Bootstrap, the look comes from Breeze.</p>
+          <div class="d-flex flex-wrap gap-3 mt-3">
+            <span class="badge theme-primary">v1.0.0-alpha.4</span>
+            <span class="badge">Bootstrap 6.0.0-alpha.1</span>
+          </div>
+        </header>
+
+        <!-- ================================================================ -->
+        <section class="card" id="usage">
+          <div class="card-body">
+            <h2 class="card-title">Usage</h2>
+            <p class="card-subtitle">Prebuilt CSS, or the Sass source for projects with their own build.</p>
+            <div class="docs-prose">
+              <h3 class="bz-subheading">Prebuilt CSS (e.g. Java, PHP, CMS)</h3>
+              <p>Copy <code>dist/breeze.min.css</code> into the project. It contains all of Bootstrap 6 – don’t load Bootstrap itself. Take the JavaScript (dialogs, menus) from the Bootstrap package.</p>
+            </div>
+            <pre class="docs-pre"><code>&lt;link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700&amp;family=Titillium+Web:wght@400;600;700&amp;display=swap"&gt;
+&lt;link rel="stylesheet" href="/css/breeze.min.css"&gt;</code></pre>
+            <div class="docs-prose">
+              <h3 class="bz-subheading">Sass in a project with a build</h3>
+              <p>Breeze loads Bootstrap itself. Afterwards, prefix the CSS variables with PostCSS (<code>postcss-prefix-custom-properties</code>, prefix <code>bs-</code>) – see the README.</p>
+            </div>
+            <pre class="docs-pre"><code>@use "breeze/scss/breeze" with ($auto-dark-mode: false);</code></pre>
+            <div class="docs-prose">
+              <h3 class="bz-subheading">Dark theme and your own styles</h3>
+              <p>Turn on the dark theme with <code>data-bs-theme="dark"</code> on <code>&lt;html&gt;</code> (<code>data-theme="dark"</code> and the <code>dark</code> class work too). Your own CSS outside layers overrides Breeze without <code>!important</code>. Tokens: <code>var(--bs-color-primary)</code>.</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- ================================================================ -->
+        <section class="card" id="colors">
+          <div class="card-body">
+            <h2 class="card-title">Colors</h2>
+            <p class="card-subtitle">The Breeze semantic colors as <code class="docs-var">--bs-color-*</code>. Bootstrap themes are derived from them (<code class="docs-var">theme-primary</code>, <code class="docs-var">bg-canvas</code> …).</p>
+            <div class="docs-swatches" id="docs-swatches"></div>
+          </div>
+        </section>
+
+        <!-- ================================================================ -->
+        <section class="card" id="typography">
+          <div class="card-body">
+            <h2 class="card-title">Typography</h2>
+            <p class="card-subtitle">Titillium Web for headings and amounts, Figtree for text and forms. Bootstrap 6 sizes – from lg up they grow with the viewport.</p>
+            <div>
+              <div class="docs-type-row"><code class="docs-var">.bz-display</code><p class="bz-display">Welcome back</p></div>
+              <div class="docs-type-row"><code class="docs-var">h1 · .bz-page-title</code><p class="bz-page-title">Logbook overview</p></div>
+              <div class="docs-type-row"><code class="docs-var">h2 · .bz-title</code><p class="bz-title">Create your account</p></div>
+              <div class="docs-type-row"><code class="docs-var">h3 · .bz-heading</code><p class="bz-heading">Choose a delivery address</p></div>
+              <div class="docs-type-row"><code class="docs-var">h4 · .bz-section-title</code><p class="bz-section-title">Personal details</p></div>
+              <div class="docs-type-row"><code class="docs-var">.bz-subheading</code><p class="bz-subheading">Your address</p></div>
+              <div class="docs-type-row"><code class="docs-var">.bz-lead</code><p class="bz-lead">It takes about two minutes.</p></div>
+              <div class="docs-type-row"><code class="docs-var">text</code><p>Hlavná 14, 811 01 Bratislava</p></div>
+              <div class="docs-type-row"><code class="docs-var">.form-label</code><p class="form-label">Email</p></div>
+              <div class="docs-type-row"><code class="docs-var">.form-text</code><p class="form-text">We’ll send the confirmation here.</p></div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ================================================================ -->
+        <section class="card" id="buttons">
+          <div class="card-body">
+            <h2 class="card-title">Buttons</h2>
+            <p class="card-subtitle">A Bootstrap variant + a theme color. At most one primary button per screen.</p>
+            <div class="docs-group">
+              <h3 class="bz-subheading">Variants</h3>
+              <div class="docs-demo" data-example>
+                <div class="d-flex flex-wrap align-items-center gap-4">
+                  <button type="button" class="btn-outline theme-secondary">Cancel</button>
+                  <button type="button" class="btn-solid theme-primary">Save vehicle</button>
+                  <button type="button" class="btn-text theme-primary">Add a new vehicle</button>
+                </div>
+              </div>
+            </div>
+            <div class="docs-group">
+              <h3 class="bz-subheading">Sizes, icon and disabled</h3>
+              <div class="docs-demo" data-example>
+                <div class="d-flex flex-wrap align-items-center gap-4">
+                  <button type="button" class="btn-solid theme-primary btn-sm">Small</button>
+                  <button type="button" class="btn-solid theme-primary">Medium</button>
+                  <button type="button" class="btn-solid theme-primary btn-lg">Large</button>
+                  <button type="button" class="btn-outline theme-secondary">
+                    <svg class="bz-icon" viewBox="0 0 20 20" aria-hidden="true"><path d="M10 3.5v9m0 0L6.5 9M10 12.5 13.5 9M4 15.5h12"/></svg>
+                    Download report
+                  </button>
+                  <button type="button" class="btn-solid theme-primary" disabled>Submit</button>
+                  <button type="button" class="bz-icon-button" aria-label="Show password">
+                    <svg class="bz-icon" viewBox="0 0 20 20" aria-hidden="true"><path d="M2 10s3-5.5 8-5.5S18 10 18 10s-3 5.5-8 5.5S2 10 2 10Z"/><circle cx="10" cy="10" r="2.5"/></svg>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ================================================================ -->
+        <section class="card" id="badges">
+          <div class="card-body">
+            <h2 class="card-title">Badges</h2>
+            <p class="card-subtitle">A short status label. The word carries the meaning; color only reinforces it.</p>
+            <div class="docs-demo" data-example>
+              <div class="d-flex flex-wrap align-items-center gap-4">
+                <span class="badge">Draft</span>
+                <span class="badge theme-primary">New</span>
+                <span class="badge theme-success">Approved</span>
+                <span class="badge theme-warning">Pending review</span>
+                <span class="badge theme-danger">Rejected</span>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ================================================================ -->
+        <section class="card" id="fields">
+          <div class="card-body">
+            <h2 class="card-title">Text fields</h2>
+            <p class="card-subtitle">Label above the field, hint or error below it. Error: <code class="docs-var">.is-invalid</code> or <code class="docs-var">aria-invalid="true"</code>.</p>
+            <div class="docs-group">
+              <h3 class="bz-subheading">Field with a hint and an optional field</h3>
+              <div class="docs-demo" data-example>
+                <div class="vstack gap-7">
+                  <div class="form-field">
+                    <label for="ex-email" class="form-label">Email</label>
+                    <input id="ex-email" type="email" class="form-control" placeholder="jana@example.sk" aria-describedby="ex-email-hint">
+                    <div id="ex-email-hint" class="form-text">We’ll send the confirmation here.</div>
+                  </div>
+                  <div class="form-field">
+                    <label for="ex-company" class="form-label">Company <span class="bz-optional">(optional)</span></label>
+                    <input id="ex-company" type="text" class="form-control">
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="docs-group">
+              <h3 class="bz-subheading">Error and disabled field</h3>
+              <div class="docs-demo" data-example>
+                <div class="vstack gap-7">
+                  <div class="form-field">
+                    <label for="ex-plate" class="form-label">License plate</label>
+                    <input id="ex-plate" type="text" class="form-control" value="TN12" aria-invalid="true" aria-describedby="ex-plate-error">
+                    <div id="ex-plate-error" class="invalid-feedback">Enter the full license plate, e.g. TN123AB.</div>
+                  </div>
+                  <div class="form-field">
+                    <label for="ex-vin" class="form-label">VIN</label>
+                    <input id="ex-vin" type="text" class="form-control" value="TMBJJ7NE5L0123456" disabled>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="docs-group">
+              <h3 class="bz-subheading">Select, textarea and field with a button</h3>
+              <div class="docs-demo" data-example>
+                <div class="vstack gap-7">
+                  <div class="form-field">
+                    <label for="ex-car" class="form-label">Car</label>
+                    <select id="ex-car" class="form-control">
+                      <option>Škoda Octavia · 6SY1372</option>
+                      <option>Škoda Superb · TN482BC</option>
+                    </select>
+                  </div>
+                  <div class="form-field">
+                    <label for="ex-note" class="form-label">Note <span class="bz-optional">(optional)</span></label>
+                    <textarea id="ex-note" class="form-control" rows="4" maxlength="300" data-counter="ex-note-count"></textarea>
+                    <div class="bz-field-meta">
+                      <div class="form-text">For example, the reason for a private trip.</div>
+                      <span id="ex-note-count" class="bz-counter" aria-live="polite">0 / 300</span>
+                    </div>
+                  </div>
+                  <div class="form-field">
+                    <label for="ex-password" class="form-label">Password</label>
+                    <div class="bz-input-action">
+                      <input id="ex-password" type="password" class="form-control" autocomplete="new-password">
+                      <button type="button" class="bz-icon-button" aria-label="Show password" aria-pressed="false" data-toggle-password="ex-password">
+                        <svg class="bz-icon" viewBox="0 0 20 20" aria-hidden="true"><path d="M2 10s3-5.5 8-5.5S18 10 18 10s-3 5.5-8 5.5S2 10 2 10Z"/><circle cx="10" cy="10" r="2.5"/></svg>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ================================================================ -->
+        <section class="card" id="choices">
+          <div class="card-body">
+            <h2 class="card-title">Choices</h2>
+            <p class="card-subtitle">2–5 options → segments; long list → select; option with context → selection row; consent → checkbox; immediate setting → switch.</p>
+            <div class="docs-group">
+              <h3 class="bz-subheading">Checkbox, radio and switch</h3>
+              <div class="docs-demo" data-example>
+                <div class="vstack gap-5">
+                  <div class="form-field">
+                    <input type="checkbox" class="check" id="ex-c1" checked>
+                    <label for="ex-c1">I agree to the <a href="#">terms and conditions</a></label>
+                  </div>
+                  <div class="form-field">
+                    <input type="checkbox" class="check" id="ex-c2">
+                    <label for="ex-c2">Send me news</label>
+                    <div class="form-text">At most one email a month.</div>
+                  </div>
+                  <div class="form-field">
+                    <input type="checkbox" class="check" id="ex-c3" aria-invalid="true" aria-describedby="ex-c3-error">
+                    <label for="ex-c3">I agree to the processing of my personal data</label>
+                    <div id="ex-c3-error" class="invalid-feedback">We can’t create the account without your consent.</div>
+                  </div>
+                  <div class="form-field">
+                    <input type="radio" class="radio" name="ex-trip" id="ex-r1" checked>
+                    <label for="ex-r1">Business trip</label>
+                  </div>
+                  <div class="form-field">
+                    <input type="radio" class="radio" name="ex-trip" id="ex-r2">
+                    <label for="ex-r2">Private trip</label>
+                  </div>
+                  <div class="form-field">
+                    <div class="switch"><input type="checkbox" role="switch" id="ex-s1" checked></div>
+                    <label for="ex-s1">Inspection reminders</label>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="docs-group">
+              <h3 class="bz-subheading">Selection row</h3>
+              <div class="docs-demo" data-example>
+                <fieldset class="vstack gap-3 m-0 p-0 border-0">
+                  <legend class="form-label">Delivery address</legend>
+                  <div class="bz-radio-card">
+                    <label class="bz-radio-card__main">
+                      <input type="radio" class="radio" name="address" value="home" checked>
+                      <span class="bz-choice__body">
+                        <span class="bz-choice__label">Home</span>
+                        <span class="bz-choice__description">Hlavná 14, 811 01 Bratislava</span>
+                      </span>
+                    </label>
+                    <button type="button" class="bz-radio-card__action">Edit</button>
+                  </div>
+                  <div class="bz-radio-card">
+                    <label class="bz-radio-card__main">
+                      <input type="radio" class="radio" name="address" value="work">
+                      <span class="bz-choice__body">
+                        <span class="bz-choice__label">Work</span>
+                        <span class="bz-choice__description">Štúrova 3, 911 01 Trenčín</span>
+                      </span>
+                    </label>
+                    <button type="button" class="bz-radio-card__action">Edit</button>
+                  </div>
+                </fieldset>
+              </div>
+            </div>
+            <div class="docs-group">
+              <h3 class="bz-subheading">Segments</h3>
+              <div class="docs-demo" data-example>
+                <fieldset class="form-field m-0 p-0 border-0">
+                  <legend class="form-label">Fuel</legend>
+                  <div class="bz-segmented">
+                    <label class="bz-segmented__item"><input type="radio" name="fuel" value="diesel" checked> Diesel</label>
+                    <label class="bz-segmented__item"><input type="radio" name="fuel" value="petrol"> Petrol</label>
+                    <label class="bz-segmented__item"><input type="radio" name="fuel" value="electric"> Electric</label>
+                  </div>
+                </fieldset>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ================================================================ -->
+        <section class="card" id="progress">
+          <div class="card-body">
+            <h2 class="card-title">Progress and steps</h2>
+            <p class="card-subtitle">Progress is Bootstrap; Breeze adds the numbered steps.</p>
+            <div class="docs-group">
+              <h3 class="bz-subheading">Progress</h3>
+              <div class="docs-demo" data-example>
+                <div class="vstack gap-7">
+                  <div class="vstack gap-4">
+                    <span class="form-text m-0" id="ex-p1">4 of 6 required fields completed</span>
+                    <div class="progress" role="progressbar" aria-labelledby="ex-p1" aria-valuenow="4" aria-valuemin="0" aria-valuemax="6">
+                      <div class="progress-bar" style="width: 66.6%"></div>
+                    </div>
+                  </div>
+                  <div class="vstack gap-4">
+                    <span class="form-text m-0" id="ex-p2">Password strength: strong</span>
+                    <div class="progress" role="progressbar" aria-labelledby="ex-p2" aria-valuenow="4" aria-valuemin="0" aria-valuemax="4">
+                      <div class="progress-bar theme-success" style="width: 100%"></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="docs-group">
+              <h3 class="bz-subheading">Steps</h3>
+              <div class="docs-demo" data-example>
+                <ol class="bz-steps" aria-label="Report steps">
+                  <li class="bz-steps__item">Vehicle</li>
+                  <li class="bz-steps__item" aria-current="step">Mileage</li>
+                  <li class="bz-steps__item">Fuel</li>
+                  <li class="bz-steps__item">Submit</li>
+                </ol>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ================================================================ -->
+        <section class="card" id="cards">
+          <div class="card-body">
+            <h2 class="card-title">Cards</h2>
+            <p class="card-subtitle">Canvas → card → recessed group (<code class="docs-var">.card-subtle</code>).</p>
+            <div class="docs-demo docs-demo--canvas" data-example>
+              <div class="card">
+                <div class="card-body">
+                  <div class="d-flex align-items-start justify-content-between gap-5">
+                    <div>
+                      <h3 class="card-title">Billing details</h3>
+                      <p class="card-subtitle mt-1 mb-0">Used on the invoice for services.</p>
+                    </div>
+                    <button type="button" class="btn-text theme-primary btn-sm">Edit</button>
+                  </div>
+                  <div class="card card-subtle">
+                    <div class="card-body">
+                      <h4 class="card-title">Company</h4>
+                      <p>Doprava Trenčín, s. r. o.<br>Company ID 12345678</p>
+                    </div>
+                  </div>
+                </div>
+                <div class="card-footer">
+                  <button type="button" class="btn-outline theme-secondary">Close</button>
+                  <button type="button" class="btn-solid theme-primary">Save details</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ================================================================ -->
+        <section class="card" id="summary">
+          <div class="card-body">
+            <h2 class="card-title">Summary</h2>
+            <p class="card-subtitle">Label–amount pairs. Amounts follow the Breeze (Slovak) format, discounts with a minus sign.</p>
+            <div class="docs-demo" data-example>
+              <div class="bz-summary" style="max-width: 28rem">
+                <dl class="bz-summary__list">
+                  <div class="bz-summary__row"><dt>Subtotal</dt><dd>59,07 €</dd></div>
+                  <div class="bz-summary__row"><dt>Shipping</dt><dd>0,00 €</dd></div>
+                  <div class="bz-summary__row bz-summary__row--discount"><dt>Discount</dt><dd>−7,95 €</dd></div>
+                </dl>
+                <div class="bz-summary__total">
+                  <div class="bz-summary__total-row"><span>Total</span><strong>51,12 €</strong></div>
+                  <p class="bz-summary__note">Including VAT</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ================================================================ -->
+        <section class="card" id="table">
+          <div class="card-body">
+            <h2 class="card-title">Table</h2>
+            <p class="card-subtitle">Bootstrap <code class="docs-var">.table</code> without vertical lines, numbers with <code class="docs-var">.text-end</code>.</p>
+            <div class="docs-demo" data-example>
+              <div class="table-responsive">
+                <table class="table">
+                  <thead>
+                    <tr>
+                      <th scope="col">Date</th>
+                      <th scope="col">Country</th>
+                      <th scope="col" class="text-end">Quantity</th>
+                      <th scope="col" class="text-end">Amount</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr><td>12. 9. 2026</td><td>Slovakia</td><td class="text-end">28,40 l</td><td class="text-end">55,72 €</td></tr>
+                    <tr><td>30. 9. 2026</td><td>Czechia</td><td class="text-end">30,93 l</td><td class="text-end">60,68 €</td></tr>
+                  </tbody>
+                  <tfoot>
+                    <tr><th scope="row" colspan="2">Total</th><td class="text-end">59,33 l</td><td class="text-end bz-table-total">116,40 €</td></tr>
+                  </tfoot>
+                </table>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ================================================================ -->
+        <section class="card" id="alerts">
+          <div class="card-body">
+            <h2 class="card-title">Alerts</h2>
+            <p class="card-subtitle">An error message says how to fix it.</p>
+            <div class="docs-demo" data-example>
+              <div class="vstack gap-5">
+                <div class="alert theme-danger" role="alert">
+                  <div>
+                    Check the 2 fields marked below.
+                    <ul>
+                      <li><a href="#ex-plate">License plate</a></li>
+                      <li><a href="#ex-email">Email</a></li>
+                    </ul>
+                  </div>
+                </div>
+                <div class="alert theme-success" role="status">
+                  <svg class="bz-icon" viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="7.5"/><path d="m7 10.2 2 2 4-4.4"/></svg>
+                  <div>
+                    <p class="alert-heading">Report submitted</p>
+                    We sent a confirmation to jana@example.sk.
+                  </div>
+                </div>
+                <div class="alert theme-warning">The inspection of 6SY1372 expires on 15. 11. 2026.</div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ================================================================ -->
+        <section class="card" id="form">
+          <div class="card-body">
+            <h2 class="card-title">Form</h2>
+            <p class="card-subtitle">Fields 24 px apart (<code class="docs-var">gap-7</code>), sections with a line, “Cancel” to the left of the main action.</p>
+            <div class="docs-demo" data-example>
+              <form class="bz-form" novalidate data-demo-form>
+                <header class="bz-form__header">
+                  <h3 class="bz-title">New vehicle</h3>
+                  <p class="bz-lead">All fields are required unless marked otherwise.</p>
+                </header>
+                <section class="bz-form__section">
+                  <h4 class="bz-form__section-title">Vehicle</h4>
+                  <div class="bz-form__row">
+                    <div class="form-field">
+                      <label for="f-make" class="form-label">Make</label>
+                      <input id="f-make" type="text" class="form-control" value="Škoda">
+                    </div>
+                    <div class="form-field">
+                      <label for="f-model" class="form-label">Model</label>
+                      <input id="f-model" type="text" class="form-control" value="Octavia">
+                    </div>
+                  </div>
+                  <div class="form-field">
+                    <label for="f-plate" class="form-label">License plate</label>
+                    <input id="f-plate" type="text" class="form-control is-invalid" value="6SY137" aria-invalid="true" aria-describedby="f-plate-error">
+                    <div id="f-plate-error" class="invalid-feedback">Enter the full license plate, e.g. TN123AB.</div>
+                  </div>
+                </section>
+                <footer class="bz-form__footer">
+                  <p class="form-text m-0">You can edit the vehicle later.</p>
+                  <div class="bz-form__actions">
+                    <button type="button" class="btn-outline theme-secondary">Cancel</button>
+                    <button type="submit" class="btn-solid theme-primary">Save vehicle</button>
+                  </div>
+                </footer>
+              </form>
+            </div>
+          </div>
+        </section>
+
+        <!-- ================================================================ -->
+        <section class="card" id="layout">
+          <div class="card-body">
+            <h2 class="card-title">Layout</h2>
+            <p class="card-subtitle">Bootstrap 6 container and 12-column grid, and the Breeze application shell; the navigation is Bootstrap <code class="docs-var">.nav.nav-pills</code>.</p>
+            <div class="docs-group">
+              <h3 class="bz-subheading">12-column grid</h3>
+              <div class="docs-demo docs-demo--canvas" data-example>
+                <div class="row g-4">
+                  <div class="col-12 md:col-6 lg:col-4"><div class="docs-cell">col-12 md:col-6 lg:col-4</div></div>
+                  <div class="col-12 md:col-6 lg:col-4"><div class="docs-cell">col-12 md:col-6 lg:col-4</div></div>
+                  <div class="col-12 lg:col-4"><div class="docs-cell">col-12 lg:col-4</div></div>
+                  <div class="col-8"><div class="docs-cell">col-8</div></div>
+                  <div class="col-4"><div class="docs-cell">col-4</div></div>
+                </div>
+              </div>
+            </div>
+            <h3 class="bz-subheading">Application bar with navigation</h3>
+            <div class="docs-demo docs-demo--canvas" data-example>
+              <header class="bz-app__bar">
+                <a class="bz-brand" href="#">
+                  <span class="bz-brand__mark">
+                    <svg class="bz-icon" viewBox="0 0 20 20" aria-hidden="true"><path d="M3.5 10.5l1.4-4a1.5 1.5 0 0 1 1.4-1h7.4a1.5 1.5 0 0 1 1.4 1l1.4 4M3.5 10.5h13v4h-13ZM5 14.5V16M15 14.5V16"/></svg>
+                  </span>
+                  Company car
+                </a>
+                <nav class="nav nav-pills" aria-label="Company car">
+                  <a class="nav-link" href="#">Monthly report</a>
+                  <a class="nav-link active" href="#" aria-current="page">Logbook overview</a>
+                  <a class="nav-link" href="#">Vehicles</a>
+                </nav>
+              </header>
+            </div>
+          </div>
+        </section>
+      </main>
+    </div>
+  </div>
+</div>
+
+<script>
+  (function () {
+    var root = document.documentElement;
+    document.querySelectorAll('input[name="docs-theme"]').forEach(function (input) {
+      input.addEventListener('change', function () { root.dataset.bsTheme = input.value; renderSwatches(); });
+    });
+
+    var TOKENS = [
+      ['canvas', 'Page background'], ['surface', 'Cards and fields'], ['surface-sunken', 'Recessed surfaces'],
+      ['primary-soft', 'Selected row'], ['line', 'Decorative lines'], ['line-strong', 'Field borders'],
+      ['ink', 'Main text'], ['ink-muted', 'Secondary text'], ['primary', 'Main action'],
+      ['primary-hover', 'Primary hover'], ['on-primary', 'Text on primary'], ['focus-ring', 'Focus ring'], ['success', 'Success'],
+      ['success-soft', 'Success background'], ['warning', 'Warning'], ['warning-soft', 'Warning background'],
+      ['danger', 'Error'], ['danger-soft', 'Error background'], ['dusk', 'Accent – illustrations'], ['peach', 'Accent – backgrounds']
+    ];
+    var swatches = document.getElementById('docs-swatches');
+    function renderSwatches() {
+      swatches.innerHTML = TOKENS.map(function (t) {
+        var v = '--bs-color-' + t[0];
+        return '<div class="docs-swatch"><div class="docs-swatch__chip" style="background:var(' + v + ')"></div>' +
+          '<span class="docs-swatch__name">' + t[1] + '</span><code class="docs-var">' + v + '</code>' +
+          '<span class="docs-swatch__value" data-color="' + v + '"></span></div>';
+      }).join('');
+      /* light-dark() resolves on the element – read the value from the rendered color */
+      swatches.querySelectorAll('[data-color]').forEach(function (el) {
+        el.textContent = getComputedStyle(el.parentNode.firstChild).backgroundColor;
+      });
+    }
+    renderSwatches();
+
+    function dedent(text) {
+      var lines = text.replace(/^\s*\n/, '').replace(/\n\s*$/, '').split('\n'), min = Infinity;
+      lines.forEach(function (l) { if (l.trim()) min = Math.min(min, l.match(/^ */)[0].length); });
+      return lines.map(function (l) { return l.slice(min); }).join('\n');
+    }
+    function escapeHtml(s) { return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
+    document.querySelectorAll('[data-example]').forEach(function (demo) {
+      var html = dedent(demo.innerHTML)
+        .replace(/ (checked|disabled|required|selected|novalidate|hidden)=""/g, ' $1')
+        .replace(/ data-(counter|toggle-password|demo-form)(="[^"]*")?/g, '')
+        .replace(/(<svg[^>]*>)[\s\S]*?(<\/svg>)/g, '$1…$2');
+      var details = document.createElement('details');
+      details.className = 'docs-code';
+      details.innerHTML = '<summary>Show HTML</summary><pre class="docs-pre"><code>' + escapeHtml(html) + '</code></pre>';
+      demo.insertAdjacentElement('afterend', details);
+    });
+
+    document.querySelectorAll('[data-counter]').forEach(function (area) {
+      var out = document.getElementById(area.dataset.counter);
+      area.addEventListener('input', function () { out.textContent = area.value.length + ' / ' + area.maxLength; });
+    });
+    document.querySelectorAll('[data-toggle-password]').forEach(function (btn) {
+      var input = document.getElementById(btn.dataset.togglePassword);
+      btn.addEventListener('click', function () {
+        var show = input.type === 'password';
+        input.type = show ? 'text' : 'password';
+        btn.setAttribute('aria-pressed', String(show));
+        btn.setAttribute('aria-label', show ? 'Hide password' : 'Show password');
+      });
+    });
+    document.querySelectorAll('[data-demo-form]').forEach(function (f) { f.addEventListener('submit', function (e) { e.preventDefault(); }); });
+
+    var links = Array.prototype.slice.call(document.querySelectorAll('.docs-nav a'));
+    if ('IntersectionObserver' in window) {
+      var observer = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+          if (!entry.isIntersecting) return;
+          links.forEach(function (a) {
+            if (a.getAttribute('href') === '#' + entry.target.id) a.setAttribute('aria-current', 'true');
+            else a.removeAttribute('aria-current');
+          });
+        });
+      }, { rootMargin: '-20% 0px -70% 0px' });
+      document.querySelectorAll('main > section[id]').forEach(function (s) { observer.observe(s); });
+    }
+  })();
+</script>
+</body>
+</html>

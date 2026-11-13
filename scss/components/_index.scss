@@ -1,0 +1,16 @@
+// Bootstrap component adjustments
+@forward "buttons";
+@forward "forms";
+@forward "content";
+
+// Breeze components Bootstrap doesn't have (same classes as Breeze for Tailwind)
+@forward "text";
+@forward "layout";
+@forward "segmented";
+@forward "radio-card";
+@forward "summary-list";
+@forward "steps";
+@forward "form";
+
+// Always last
+@forward "motion";

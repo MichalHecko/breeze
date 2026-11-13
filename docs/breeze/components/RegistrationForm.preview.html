@@ -1,0 +1,218 @@
+<!-- @dsCard group="Vzory" height=2700 subtitle="Kompletný registračný formulár" -->
+<!doctype html>
+<html lang="sk">
+<head><meta charset="utf-8"><title>Registrácia — ukážka formulára</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700&family=Titillium+Web:wght@400;600;700&display=swap">
+<script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4.1.18/dist/index.global.js"></script>
+</head>
+<body class="bg-canvas font-sans text-ink antialiased">
+<div id="root" class="p-6"></div>
+<script>
+  var V = window.Breeze, h = React.createElement;
+  V.installTailwindTheme();
+
+  function Icon(d) {
+    return h('svg', { width: 20, height: 20, viewBox: '0 0 20 20', fill: 'none', 'aria-hidden': true, className: 'shrink-0' },
+      h('path', { d: d, stroke: 'currentColor', strokeWidth: 1.5, strokeLinecap: 'round', strokeLinejoin: 'round' }));
+  }
+  var ICONS = {
+    user: 'M10 10a3.25 3.25 0 100-6.5 3.25 3.25 0 000 6.5zM3.75 16.5c.8-2.9 3.2-4.5 6.25-4.5s5.45 1.6 6.25 4.5',
+    mail: 'M3 5.5h14v9H3zM3.5 6l6.5 5 6.5-5',
+    lock: 'M5 9h10v7.5H5zM7 9V6.75a3 3 0 016 0V9',
+    sliders: 'M4 6h7M15 6h1M4 14h1M9 14h7M13 4v4M7 12v4',
+    check: 'M4 10.5l3.5 3.5L16 6',
+    eye: 'M2 10s3-5.5 8-5.5S18 10 18 10s-3 5.5-8 5.5S2 10 2 10zM10 12.5a2.5 2.5 0 100-5 2.5 2.5 0 000 5z',
+    eyeOff: 'M3 3l14 14M8.2 5a8 8 0 011.8-.5c5 0 8 5.5 8 5.5a14 14 0 01-2.2 2.8M12.1 12.2A2.5 2.5 0 017.8 7.9M5.4 6.6C3.3 8 2 10 2 10s3 5.5 8 5.5c1.3 0 2.5-.4 3.5-.9'
+  };
+  var SECTIONS = [
+    { id: 'osobne', label: 'Osobné údaje', icon: 'user' },
+    { id: 'kontakt', label: 'Kontakt', icon: 'mail' },
+    { id: 'prihlasenie', label: 'Prihlásenie', icon: 'lock' },
+    { id: 'profil', label: 'Profil a nastavenia', icon: 'sliders' },
+    { id: 'suhlasy', label: 'Súhlasy', icon: 'check' }
+  ];
+  var MONTHS = ['január', 'február', 'marec', 'apríl', 'máj', 'jún', 'júl', 'august', 'september', 'október', 'november', 'december'];
+  function range(a, b) { var r = []; if (a <= b) { for (var i = a; i <= b; i++) r.push(i); } else { for (var j = a; j >= b; j--) r.push(j); } return r; }
+
+  function strength(pw) {
+    if (!pw) return 0;
+    return (pw.length >= 8 ? 1 : 0) + (/\d/.test(pw) ? 1 : 0) + (/[A-ZÁ-Ž]/.test(pw) ? 1 : 0) + ((/[^A-Za-z0-9]/.test(pw) || pw.length >= 12) ? 1 : 0);
+  }
+  var STRENGTH = [
+    { label: 'zadajte heslo', tone: 'danger' }, { label: 'slabé', tone: 'danger' }, { label: 'slabé', tone: 'danger' },
+    { label: 'stredné', tone: 'warning' }, { label: 'silné', tone: 'success' }
+  ];
+
+  function validate(f) {
+    var e = {};
+    if (!f.first.trim()) e.first = 'Zadajte svoje meno.';
+    if (!f.last.trim()) e.last = 'Zadajte priezvisko.';
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(f.email)) e.email = f.email ? 'Doplňte celú e-mailovú adresu, napr. jana@example.sk.' : 'Zadajte e-mail.';
+    if (f.password.length < 8 || !/\d/.test(f.password) || !/[A-ZÁ-Ž]/.test(f.password)) e.password = 'Heslo potrebuje aspoň 8 znakov, jedno číslo a jedno veľké písmeno.';
+    if (!f.confirm || f.confirm !== f.password) e.confirm = 'Heslá sa nezhodujú.';
+    if (f.type === 'firma') {
+      if (!f.company.trim()) e.company = 'Zadajte názov firmy.';
+      if (!/^\d{8}$/.test(f.ico.replace(/\s/g, ''))) e.ico = 'IČO má 8 číslic.';
+    }
+    if (!f.terms) e.terms = 'Bez súhlasu s podmienkami nie je možné účet vytvoriť.';
+    return e;
+  }
+
+  function Section(props) {
+    return h('section', { id: props.id, className: 'flex scroll-mt-6 flex-col gap-6 border-t border-line pt-8' },
+      h('div', { className: 'flex flex-col gap-1' },
+        h('h2', { className: 'font-display text-lg font-semibold text-ink' }, props.title),
+        props.description ? h('p', { className: 'text-sm text-ink-muted' }, props.description) : null),
+      props.children);
+  }
+
+  function App() {
+    var s = React.useState({
+      salutation: 'none', first: '', last: '', day: '', month: '', year: '',
+      email: '', prefix: '+421', phone: '', country: 'SK', city: '',
+      password: '', confirm: '', type: 'osobny', company: '', ico: '', dic: '',
+      about: '', lang: 'sk', notifyEmail: true, notifySms: false, terms: false, news: false
+    });
+    var f = s[0], setF = s[1];
+    var sub = React.useState(false), submitted = sub[0], setSubmitted = sub[1];
+    var done = React.useState(false), success = done[0], setSuccess = done[1];
+    var act = React.useState('osobne'), active = act[0], setActive = act[1];
+    var show = React.useState(false), showPw = show[0], setShowPw = show[1];
+
+    function set(key) {
+      return function (e) {
+        var v = e && e.target ? (e.target.type === 'checkbox' ? e.target.checked : e.target.value) : e;
+        setF(function (prev) { var n = Object.assign({}, prev); n[key] = v; return n; });
+        setSuccess(false);
+      };
+    }
+    var errors = submitted ? validate(f) : {};
+    if (!submitted && f.confirm && f.confirm !== f.password) errors.confirm = 'Heslá sa nezhodujú.';
+    var all = validate(f);
+    var required = ['first', 'last', 'email', 'password', 'confirm', 'terms'];
+    var filled = required.filter(function (k) { return !all[k]; }).length;
+    var score = strength(f.password);
+    var errCount = Object.keys(errors).length;
+
+    function onSubmit(e) {
+      e.preventDefault();
+      setSubmitted(true);
+      var errs = validate(f);
+      var keys = Object.keys(errs);
+      if (keys.length) {
+        setSuccess(false);
+        setTimeout(function () {
+          var el = document.querySelector('[aria-invalid="true"]');
+          if (el) { el.scrollIntoView({ block: 'center', behavior: 'smooth' }); el.focus({ preventScroll: true }); }
+        }, 0);
+      } else {
+        setSuccess(true);
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+    }
+    function go(id) {
+      setActive(id);
+      var el = document.getElementById(id);
+      if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    var sidebar = h('aside', { className: 'sticky top-6 flex flex-col gap-8 self-start p-6' },
+      h('div', { className: 'flex flex-col gap-3' },
+        h('div', { className: 'flex items-center gap-3' },
+          h('span', { className: 'grid size-10 place-items-center rounded-xl bg-primary-soft text-primary' }, Icon(ICONS.user)),
+          h('span', { className: 'font-display text-lg font-semibold' }, 'Nový účet')),
+        h('p', { className: 'text-sm leading-6 text-ink-muted' }, 'Účet vám uloží adresy, objednávky a nastavenia na jednom mieste.')),
+      h('nav', { 'aria-label': 'Sekcie formulára', className: 'flex flex-col gap-1' }, SECTIONS.map(function (sec) {
+        var on = sec.id === active;
+        return h('button', {
+          key: sec.id, type: 'button', onClick: function () { go(sec.id); }, 'aria-current': on ? 'true' : undefined,
+          className: 'flex h-11 cursor-pointer items-center gap-3 rounded-xl px-3 text-left text-base transition-colors ' +
+            'focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary ' +
+            (on ? 'bg-surface font-medium text-ink shadow-xs' : 'text-ink-muted hover:text-ink')
+        }, Icon(ICONS[sec.icon]), sec.label);
+      })),
+      h(V.Progress, { value: filled, max: required.length, label: 'Vyplnené ' + filled + ' z ' + required.length + ' povinných' }));
+
+    var pwToggle = h('button', {
+      type: 'button', onClick: function () { setShowPw(!showPw); }, 'aria-label': showPw ? 'Skryť heslo' : 'Zobraziť heslo', 'aria-pressed': showPw,
+      className: 'grid size-9 cursor-pointer place-items-center rounded-lg text-ink-muted hover:bg-surface-sunken hover:text-ink focus-visible:outline-2 focus-visible:outline-primary'
+    }, Icon(showPw ? ICONS.eyeOff : ICONS.eye));
+
+    var form = h('form', { noValidate: true, onSubmit: onSubmit, className: 'flex flex-col gap-8 rounded-2xl bg-surface px-10 py-10 shadow-md' },
+      h('header', { className: 'flex flex-col gap-2' },
+        h('div', null, h(V.Badge, { tone: 'primary' }, 'Zadarmo')),
+        h('h1', { className: 'font-display text-2xl font-semibold text-ink' }, 'Vytvorte si účet'),
+        h('p', { className: 'text-lg text-ink-muted' }, 'Vyplnenie zaberie asi dve minúty. Polia sú povinné, ak nie je uvedené inak.')),
+
+      success ? h('div', { role: 'status', className: 'flex items-start gap-3 rounded-xl bg-success-soft p-4 text-success' },
+        Icon(ICONS.check),
+        h('div', { className: 'flex flex-col gap-0.5' },
+          h('strong', { className: 'font-semibold' }, 'Účet je vytvorený'),
+          h('span', { className: 'text-sm' }, 'Potvrdzovací odkaz sme poslali na ' + f.email + '.'))) : null,
+      errCount ? h('div', { role: 'alert', className: 'rounded-xl bg-danger-soft p-4 text-sm font-medium text-danger' },
+        errCount === 1 ? 'Skontrolujte 1 pole označené nižšie.' : 'Skontrolujte ' + errCount + (errCount < 5 ? ' polia označené' : ' polí označených') + ' nižšie.') : null,
+
+      h(Section, { id: 'osobne', title: 'Osobné údaje' },
+        h(V.Segmented, { label: 'Oslovenie', value: f.salutation, onChange: set('salutation'), options: [
+          { value: 'pan', label: 'Pán' }, { value: 'pani', label: 'Pani' }, { value: 'none', label: 'Neuvádzať' }] }),
+        h('div', { className: 'grid grid-cols-2 gap-4' },
+          h(V.TextField, { label: 'Meno', autoComplete: 'given-name', placeholder: 'Jana', value: f.first, onChange: set('first'), error: errors.first }),
+          h(V.TextField, { label: 'Priezvisko', autoComplete: 'family-name', placeholder: 'Nováková', value: f.last, onChange: set('last'), error: errors.last })),
+        h('fieldset', { className: 'flex flex-col gap-2' },
+          h('legend', { className: 'mb-2 text-sm font-semibold text-ink' }, 'Dátum narodenia', h('span', { className: 'ml-1 font-normal text-ink-muted' }, '(nepovinné)')),
+          h('div', { className: 'grid grid-cols-3 gap-4' },
+            h(V.Select, { 'aria-label': 'Deň', placeholder: 'Deň', value: f.day, onChange: set('day'), options: range(1, 31) }),
+            h(V.Select, { 'aria-label': 'Mesiac', placeholder: 'Mesiac', value: f.month, onChange: set('month'), options: MONTHS.map(function (m, i) { return { value: i + 1, label: m }; }) }),
+            h(V.Select, { 'aria-label': 'Rok', placeholder: 'Rok', value: f.year, onChange: set('year'), options: range(2010, 1930) })),
+          h('p', { className: 'text-sm text-ink-muted' }, 'K narodeninám vám pošleme zľavu.'))),
+
+      h(Section, { id: 'kontakt', title: 'Kontakt' },
+        h(V.TextField, { label: 'E-mail', type: 'email', autoComplete: 'email', placeholder: 'jana@example.sk', value: f.email, onChange: set('email'), error: errors.email, hint: 'Pošleme naň potvrdenie registrácie.' }),
+        h('div', { className: 'grid grid-cols-[9rem_1fr] items-start gap-4' },
+          h(V.Select, { label: 'Predvoľba', value: f.prefix, onChange: set('prefix'), options: ['+421', '+420', '+43', '+36'] }),
+          h(V.TextField, { label: 'Telefón', optional: true, type: 'tel', autoComplete: 'tel-national', placeholder: '900 123 456', value: f.phone, onChange: set('phone'), hint: 'Iba pre kuriéra pri doručení.' })),
+        h('div', { className: 'grid grid-cols-2 gap-4' },
+          h(V.Select, { label: 'Krajina', value: f.country, onChange: set('country'), options: [{ value: 'SK', label: 'Slovensko' }, { value: 'CZ', label: 'Česko' }, { value: 'AT', label: 'Rakúsko' }, { value: 'HU', label: 'Maďarsko' }] }),
+          h(V.TextField, { label: 'Mesto', optional: true, autoComplete: 'address-level2', placeholder: 'Bratislava', value: f.city, onChange: set('city') }))),
+
+      h(Section, { id: 'prihlasenie', title: 'Prihlásenie', description: 'Prihlasovať sa budete e-mailom a heslom.' },
+        h('div', { className: 'flex flex-col gap-3' },
+          h(V.TextField, { label: 'Heslo', type: showPw ? 'text' : 'password', autoComplete: 'new-password', value: f.password, onChange: set('password'), trailing: pwToggle,
+            error: errors.password, hint: 'Aspoň 8 znakov, jedno číslo a jedno veľké písmeno.' }),
+          f.password ? h(V.Progress, { value: score, max: 4, tone: STRENGTH[score].tone, label: 'Sila hesla: ' + STRENGTH[score].label }) : null),
+        h(V.TextField, { label: 'Zopakujte heslo', type: showPw ? 'text' : 'password', autoComplete: 'new-password', value: f.confirm, onChange: set('confirm'), error: errors.confirm })),
+
+      h(Section, { id: 'profil', title: 'Profil a nastavenia' },
+        h('fieldset', { className: 'flex flex-col gap-2' },
+          h('legend', { className: 'mb-2 text-sm font-semibold text-ink' }, 'Typ účtu'),
+          h(V.RadioCard, { name: 'type', value: 'osobny', checked: f.type === 'osobny', onChange: set('type'), label: 'Osobný', description: 'Nákupy pre seba a rodinu.' }),
+          h(V.RadioCard, { name: 'type', value: 'firma', checked: f.type === 'firma', onChange: set('type'), label: 'Firemný', description: 'Faktúry na IČO, úhrada prevodom.' })),
+        f.type === 'firma' ? h(V.Card, { tone: 'sunken', title: 'Fakturačné údaje' },
+          h(V.TextField, { label: 'Názov firmy', autoComplete: 'organization', value: f.company, onChange: set('company'), error: errors.company }),
+          h('div', { className: 'grid grid-cols-2 gap-4' },
+            h(V.TextField, { label: 'IČO', inputMode: 'numeric', placeholder: '12345678', value: f.ico, onChange: set('ico'), error: errors.ico }),
+            h(V.TextField, { label: 'IČ DPH', optional: true, placeholder: 'SK2020123456', value: f.dic, onChange: set('dic') }))) : null,
+        h(V.Textarea, { label: 'O mne', optional: true, maxLength: 200, rows: 3, placeholder: 'Pár slov o sebe…', value: f.about, onChange: set('about'), hint: 'Zobrazí sa pri vašich recenziách.' }),
+        h(V.Select, { label: 'Jazyk komunikácie', value: f.lang, onChange: set('lang'), options: [{ value: 'sk', label: 'Slovenčina' }, { value: 'cs', label: 'Čeština' }, { value: 'en', label: 'English' }] }),
+        h(V.Card, { tone: 'sunken', title: 'Upozornenia' },
+          h(V.Switch, { label: 'E-mailom', description: 'Stav objednávky a dôležité zmeny účtu.', checked: f.notifyEmail, onChange: set('notifyEmail') }),
+          h(V.Switch, { label: 'SMS správou', description: 'Iba keď kuriér vyráža k vám.', checked: f.notifySms, onChange: set('notifySms') }))),
+
+      h(Section, { id: 'suhlasy', title: 'Súhlasy' },
+        h(V.Checkbox, { checked: f.terms, onChange: set('terms'), error: errors.terms,
+          label: h('span', null, 'Súhlasím s ', h('a', { href: '#', className: 'font-medium text-link underline underline-offset-4' }, 'obchodnými podmienkami'), ' a ', h('a', { href: '#', className: 'font-medium text-link underline underline-offset-4' }, 'spracovaním osobných údajov')) }),
+        h(V.Checkbox, { checked: f.news, onChange: set('news'), label: 'Chcem dostávať novinky a ponuky', description: 'Najviac dvakrát mesačne. Odhlásiť sa dá jedným klikom.' })),
+
+      h('footer', { className: 'flex items-center justify-between gap-4 border-t border-line pt-8' },
+        h('p', { className: 'text-sm text-ink-muted' }, 'Už máte účet? ', h('a', { href: '#', className: 'font-medium text-link hover:underline underline-offset-4' }, 'Prihláste sa')),
+        h('div', { className: 'flex gap-3' },
+          h(V.Button, { variant: 'secondary' }, 'Zrušiť'),
+          h(V.Button, { type: 'submit' }, 'Vytvoriť účet'))));
+
+    return h('div', { className: 'mx-auto grid max-w-5xl grid-cols-[15rem_1fr] gap-2 rounded-3xl bg-surface-sunken p-2' }, sidebar, form);
+  }
+
+  ReactDOM.createRoot(document.getElementById('root')).render(h(App));
+</script>
+</body>
+</html>

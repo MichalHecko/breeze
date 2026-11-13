@@ -1,0 +1,23 @@
+// =============================================================================
+// Breeze mixins
+// =============================================================================
+
+@use "settings" as s;
+
+/// Styles for the dark theme. Applies to data-bs-theme="dark" (Bootstrap),
+/// data-theme="dark" and .dark (same as Breeze for Tailwind), and with
+/// $auto-dark-mode also following the system setting.
+/// @content styles for the dark theme
+@mixin dark {
+  :is([data-bs-theme="dark"], [data-theme="dark"], .dark) & {
+    @content;
+  }
+
+  @if s.$auto-dark-mode {
+    @media (prefers-color-scheme: dark) {
+      :root:not([data-bs-theme="light"]) & {
+        @content;
+      }
+    }
+  }
+}

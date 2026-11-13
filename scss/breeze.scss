@@ -1,0 +1,46 @@
+/*! Breeze for Bootstrap v1.0.0-alpha.4 | built on Bootstrap 6.0.0-alpha.1 */
+
+// =============================================================================
+// Breeze for Bootstrap – the Breeze design system as a theme for Bootstrap 6
+//
+// Order per Sass Guidelines: abstracts (no CSS) → Bootstrap configured from
+// Breeze tokens → page base → components. All Breeze CSS lives in the
+// @layer custom layer, which Bootstrap reserves for it (after components,
+// before helpers and utilities).
+//
+// Settings and tokens can be changed when loading:
+//   @use "breeze/scss/breeze" with ($auto-dark-mode: true);
+// =============================================================================
+
+@forward "abstracts/settings";
+@forward "abstracts/breeze";
+@use "abstracts/bootstrap-config" as cfg;
+
+@use "bootstrap/scss/bootstrap" with (
+  $enable-gradients: false,
+  $color-mode-type: "data",
+  $theme-colors: cfg.$theme-colors,
+  $theme-bgs: cfg.$theme-bgs,
+  $theme-fgs: cfg.$theme-fgs,
+  $theme-borders: cfg.$theme-borders,
+  $root-tokens: cfg.$root-tokens,
+  $button-tokens: cfg.$button-tokens,
+  $form-control-tokens: cfg.$form-control-tokens,
+  $check-tokens: cfg.$check-tokens,
+  $radio-tokens: cfg.$radio-tokens,
+  $switch-tokens: cfg.$switch-tokens,
+  $form-label-tokens: cfg.$form-label-tokens,
+  $form-text-tokens: cfg.$form-text-tokens,
+  $card-tokens: cfg.$card-tokens,
+  $badge-tokens: cfg.$badge-tokens,
+  $alert-tokens: cfg.$alert-tokens,
+  $progress-tokens: cfg.$progress-tokens,
+  $strength-tokens: cfg.$strength-tokens,
+  $table-tokens: cfg.$table-tokens,
+  $nav-tokens: cfg.$nav-tokens,
+  $nav-pills-tokens: cfg.$nav-pills-tokens,
+  $stepper-tokens: cfg.$stepper-tokens,
+);
+
+@use "base";
+@use "components";

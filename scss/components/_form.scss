@@ -1,0 +1,128 @@
+// Ported from Breeze for Tailwind – same classes in both variants.
+/* ==========================================================================
+   Form – form layout
+   Field → field 24 px, sections separated by a line with 32 px of space,
+   footer with "Cancel" (secondary) to the left of the primary action.
+
+   <form class="bz-form" novalidate>
+     <header class="bz-form__header">
+       <h1 class="bz-title">Create your account</h1>
+       <p class="bz-lead">It takes about two minutes.</p>
+     </header>
+
+     <section class="bz-form__section">
+       <div class="bz-form__section-header">
+         <h2 class="bz-form__section-title">Personal details</h2>
+       </div>
+       <div class="bz-form__row"> … two fields side by side … </div>
+     </section>
+
+     <footer class="bz-form__footer">
+       <p class="form-text">Already have an account? <a href="…">Sign in</a></p>
+       <div class="bz-form__actions">
+         <button type="button" class="btn-outline theme-secondary">Cancel</button>
+         <button type="submit" class="btn-solid theme-primary">Create account</button>
+       </div>
+     </footer>
+   </form>
+   ========================================================================== */
+
+@layer custom {
+  .bz-form {
+    display: flex;
+    flex-direction: column;
+    gap: calc(var(--spacing) * 6);
+    min-width: 0;
+  }
+
+  .bz-form__header {
+    display: flex;
+    flex-direction: column;
+    gap: calc(var(--spacing) * 2);
+  }
+
+  /* Section and footer: line on top; with the form gap, 32 px above it. */
+  .bz-form__section,
+  .bz-form__footer {
+    margin-top: calc(var(--spacing) * 2);
+    padding-top: calc(var(--spacing) * 8);
+    border-top: 1px solid var(--color-line);
+  }
+
+  .bz-form__section {
+    display: flex;
+    flex-direction: column;
+    gap: calc(var(--spacing) * 6);
+    min-width: 0;
+    scroll-margin-top: calc(var(--spacing) * 6);
+  }
+
+  .bz-form__section:first-child {
+    margin-top: 0;
+    padding-top: 0;
+    border-top: 0;
+  }
+
+  .bz-form__section-header {
+    display: flex;
+    flex-direction: column;
+    gap: calc(var(--spacing) * 1);
+  }
+
+  .bz-form__section-title {
+    margin: 0;
+    color: var(--color-ink);
+    font-family: var(--font-display);
+    font-size: var(--text-lg);
+    font-weight: var(--font-weight-semibold);
+    line-height: var(--text-lg--line-height);
+    letter-spacing: normal;
+  }
+
+  .bz-form__section-description {
+    margin: 0;
+    color: var(--color-ink-muted);
+    font-size: var(--text-sm);
+    line-height: var(--text-sm--line-height);
+  }
+
+  /* Fields side by side: stacked on mobile, two columns from 576 px (sm). */
+  .bz-form__row {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: calc(var(--spacing) * 4);
+  }
+
+  @media (width >= 36rem) {
+    .bz-form__row {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  /* Modifiers come after the media query in the source, so they win. */
+
+  /* Three short fields always side by side (day / month / year). */
+  .bz-form__row--3 {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  /* Short field + long field (dialling code + phone). */
+  .bz-form__row--prefix {
+    grid-template-columns: 9rem minmax(0, 1fr);
+  }
+
+  .bz-form__footer {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: calc(var(--spacing) * 4);
+  }
+
+  .bz-form__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: calc(var(--spacing) * 3);
+    margin-left: auto;
+  }
+}

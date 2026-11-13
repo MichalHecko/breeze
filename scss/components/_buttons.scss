@@ -1,0 +1,78 @@
+// =============================================================================
+// Buttons – Bootstrap 6 with the Breeze look
+//   main action:      <button class="btn-solid theme-primary">Save</button>
+//   secondary action: <button class="btn-outline theme-secondary">Cancel</button>
+//   text action:      <button class="btn-text theme-primary">Add address</button>
+// Sizes: .btn-sm, .btn-lg. Bootstrap 6 radius (8 px, large 12 px) and focus
+// ring; Breeze height 44 px (sm 36, lg 52), weight 500 (tokens).
+// =============================================================================
+
+@use "../abstracts" as *;
+
+@layer custom {
+  // Primary hover exactly per Breeze (not a derived shade).
+  .btn-solid.theme-primary {
+    --btn-hover-bg: #{color("primary-hover")};
+    --btn-hover-border-color: #{color("primary-hover")};
+    --btn-active-bg: #{color("primary-hover")};
+    --btn-active-border-color: #{color("primary-hover")};
+  }
+
+  // Secondary button: white with a subtle border, stronger border on hover.
+  .btn-outline.theme-secondary {
+    --btn-bg: #{color("surface")};
+    --btn-color: #{color("ink")};
+    --btn-border-color: #{color("line")};
+    --btn-hover-bg: #{color("surface")};
+    --btn-hover-color: #{color("ink")};
+    --btn-hover-border-color: #{color("line-strong")};
+    --btn-active-bg: #{color("surface-sunken")};
+    --btn-active-color: #{color("ink")};
+    --btn-active-border-color: #{color("line-strong")};
+    box-shadow: var(--shadow-xs);
+  }
+
+  // Text button (ghost): narrower padding, primary-soft on hover.
+  .btn-text {
+    --btn-padding-x: #{space(3)};
+  }
+
+  .btn-text.btn-sm {
+    --btn-padding-x: #{space(2)};
+  }
+
+  // Icon-only button (e.g. "Show password") – always with an aria-label.
+  .bz-icon-button {
+    display: inline-grid;
+    place-items: center;
+    width: space(9);
+    height: space(9);
+    padding: 0;
+    border: 0;
+    border-radius: var(--radius-lg);
+    background-color: transparent;
+    color: color("ink-muted");
+    cursor: pointer;
+    transition: color 150ms, background-color 150ms;
+
+    &:hover:not(:disabled) {
+      background-color: color("surface-sunken");
+      color: color("ink");
+    }
+
+    &:focus-visible {
+      outline: var(--focus-ring-width) solid color("focus-ring");
+      outline-offset: var(--focus-ring-offset);
+    }
+
+    &:disabled {
+      cursor: not-allowed;
+      opacity: .45;
+    }
+
+    > svg {
+      width: 1.25rem;
+      height: 1.25rem;
+    }
+  }
+}

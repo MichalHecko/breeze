@@ -1,0 +1,25 @@
+{
+  "name": "breeze-bootstrap",
+  "version": "1.0.0-alpha.4",
+  "description": "Breeze for Bootstrap – the Breeze design system as a theme for Bootstrap 6. Prebuilt CSS to copy, plus the Sass source.",
+  "private": true,
+  "type": "module",
+  "style": "dist/breeze.css",
+  "sass": "scss/breeze.scss",
+  "files": [
+    "scss",
+    "dist"
+  ],
+  "scripts": {
+    "build": "node build.mjs",
+    "watch": "node build.mjs --watch"
+  },
+  "dependencies": {
+    "bootstrap": "6.0.0-alpha.1"
+  },
+  "devDependencies": {
+    "postcss": "8.5.30",
+    "postcss-prefix-custom-properties": "0.1.0",
+    "sass": "1.105.2"
+  }
+}

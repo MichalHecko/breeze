@@ -1,0 +1,90 @@
+// Ported from Breeze for Tailwind – same classes in both variants.
+/* ==========================================================================
+   Summary list – label–amount pairs with a highlighted total
+   Order summary, calculation. Amounts follow the Breeze (Slovak) format:
+   59,07 €, discounts with a minus sign: −7,95 €.
+
+   <div class="bz-summary">
+     <dl class="bz-summary__list">
+       <div class="bz-summary__row"><dt>Subtotal</dt><dd>59,07 €</dd></div>
+       <div class="bz-summary__row bz-summary__row--discount"><dt>Discount</dt><dd>−7,95 €</dd></div>
+     </dl>
+     <div class="bz-summary__total">
+       <div class="bz-summary__total-row"><span>Total</span><strong>51,12 €</strong></div>
+       <p class="bz-summary__note">Including VAT</p>
+     </div>
+   </div>
+   ========================================================================== */
+
+@layer custom {
+  .bz-summary {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+  }
+
+  .bz-summary__list {
+    display: flex;
+    flex-direction: column;
+    gap: calc(var(--spacing) * 5);
+    margin: 0;
+  }
+
+  .bz-summary__row {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: calc(var(--spacing) * 4);
+    font-size: var(--text-base);
+    line-height: var(--text-base--line-height);
+  }
+
+  /* Bootstrap's reboot makes <dt> bold. */
+  .bz-summary__row > dt {
+    margin: 0;
+    font-weight: var(--font-weight-normal);
+    color: var(--color-ink-muted);
+  }
+
+  .bz-summary__row > dd {
+    margin: 0;
+    color: var(--color-ink);
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+  }
+
+  .bz-summary__row--discount > dd {
+    color: var(--color-success);
+  }
+
+  .bz-summary__total {
+    margin-top: calc(var(--spacing) * 6);
+    padding-top: calc(var(--spacing) * 6);
+    border-top: 1px solid var(--color-line);
+  }
+
+  .bz-summary__total-row {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: calc(var(--spacing) * 4);
+    color: var(--color-ink);
+    font-family: var(--font-display);
+    font-size: var(--text-lg);
+    font-weight: var(--font-weight-semibold);
+    line-height: var(--text-lg--line-height);
+  }
+
+  .bz-summary__total-row > strong {
+    font-weight: var(--font-weight-semibold);
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+  }
+
+  .bz-summary__note {
+    margin: calc(var(--spacing) * 1) 0 0;
+    color: var(--color-ink-muted);
+    font-size: var(--text-sm);
+    line-height: var(--text-sm--line-height);
+  }
+}

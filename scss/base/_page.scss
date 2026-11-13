@@ -1,0 +1,49 @@
+// =============================================================================
+// Page: color mode, background, headings
+// Everything is in the custom layer – it overrides Bootstrap, and the
+// application's own CSS (outside layers) overrides Breeze.
+// =============================================================================
+
+@use "../abstracts" as *;
+
+@layer custom {
+  // Color mode. Colors are light-dark(); color-scheme switches them.
+  @if not $auto-dark-mode {
+    :root,
+    :host,
+    [data-bs-theme="light"] {
+      --shadow-strength: 1;
+      color-scheme: light;
+    }
+  }
+
+  [data-bs-theme="dark"],
+  [data-theme="dark"],
+  .dark {
+    --shadow-strength: 2.4;
+    color-scheme: dark;
+  }
+
+  body {
+    background-color: color("canvas");
+    color: color("ink");
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  // Headings per Breeze on the Bootstrap 6 scale (sizes are Bootstrap's):
+  // page h1 3xl → form/panel/dialog h2 2xl → card h3 xl → section h4 lg.
+  h1, .h1,
+  h2, .h2,
+  h3, .h3,
+  h4, .h4 {
+    color: color("ink");
+    font-family: var(--font-display);
+    font-weight: var(--font-weight-semibold);
+  }
+
+  b,
+  strong {
+    font-weight: var(--font-weight-semibold);
+  }
+}

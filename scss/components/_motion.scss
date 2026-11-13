@@ -1,0 +1,14 @@
+// Ported from Breeze for Tailwind – same classes in both variants.
+/* ==========================================================================
+   Motion – respects the system "reduce motion" setting
+   Imported as the last component so it overrides the transitions above.
+   ========================================================================== */
+
+@layer custom {
+  @media (prefers-reduced-motion: reduce) {
+    [class*="bz-"],
+    [class*="bz-"]::before {
+      transition: none;
+    }
+  }
+}

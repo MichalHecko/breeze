@@ -1,0 +1,154 @@
+// =============================================================================
+// Forms – Bootstrap 6 with the Breeze look
+//
+// Field: <div class="form-field">
+//          <label class="form-label" for="email">Email</label>
+//          <input class="form-control" id="email" type="email">
+//          <div class="form-text">We'll send the confirmation here.</div>
+//        </div>
+//
+// Radius: Bootstrap 6 default, the same as buttons (8 px, large 12 px).
+// Focus as in Bootstrap 5 / Breeze: primary/60 border and a 4 px primary/25 glow.
+// Errors: .is-invalid (Bootstrap) or aria-invalid="true" + .invalid-feedback.
+// =============================================================================
+
+@use "../abstracts" as *;
+
+@layer custom {
+  // Text fields and selects
+
+  .form-control:hover:not(:disabled, :focus-visible, :focus-within, .is-invalid, [aria-invalid="true"]) {
+    border-color: color("ink-muted");
+  }
+
+  .form-control:is(:focus-visible, :focus-within) {
+    border-color: color-mix(in oklab, #{color("primary")} 60%, transparent);
+    outline: 4px solid alpha("primary", 25%);
+    outline-offset: 0;
+  }
+
+  .form-control:is(.is-invalid, [aria-invalid="true"]) {
+    border-color: color("danger");
+
+    &:is(:focus-visible, :focus-within) {
+      border-color: color("danger");
+      outline-color: alpha("danger", 25%);
+    }
+  }
+
+  .form-control:disabled {
+    cursor: not-allowed;
+    opacity: .45;
+  }
+
+  textarea.form-control {
+    padding-block: space(3);
+    min-height: space(28);
+    line-height: space(6);
+  }
+
+  // Select arrow in the dark theme (also with data-theme="dark" and .dark).
+  select.form-control {
+    @include dark {
+      --control-select-bg: var(--control-select-bg-dark);
+    }
+  }
+
+  // Field label: 14 px, weight 600 (Bootstrap leaves it to tokens it never sets).
+  .form-label {
+    color: color("ink");
+    font-size: var(--text-sm);
+    font-weight: var(--font-weight-semibold);
+    line-height: var(--text-sm--line-height);
+  }
+
+  // Checkbox, radio, switch
+
+  .check,
+  .radio {
+    border-width: 2px;
+  }
+
+  .check:hover:not(:checked, :indeterminate, :disabled, .is-invalid, [aria-invalid="true"]),
+  .radio:hover:not(:checked, :disabled, .is-invalid, [aria-invalid="true"]) {
+    border-color: color("ink-muted");
+  }
+
+  :is(.check, .radio):focus-visible,
+  .switch:has(input:focus-visible) {
+    outline: 4px solid alpha("primary", 25%);
+    outline-offset: 0;
+  }
+
+  // Switch: <div class="switch"><input type="checkbox" role="switch" id="…"></div>
+  .switch {
+    box-shadow: none;
+
+    &::before {
+      box-shadow: var(--shadow-sm);
+    }
+
+    &:focus-within:not(:has(input:focus-visible)) {
+      outline: 0;
+    }
+  }
+
+  :is(.check, .radio):is(.is-invalid, [aria-invalid="true"]):not(:checked) {
+    border-color: color("danger");
+  }
+
+  // Error message: shown with aria-invalid too, without JavaScript.
+  .form-field:has([aria-invalid="true"]) > .invalid-feedback {
+    display: block;
+  }
+
+  .invalid-feedback {
+    color: color("danger");
+    font-size: var(--text-sm);
+    line-height: var(--text-sm--line-height);
+  }
+
+  // Breeze additions
+
+  // "(optional)" after the label: <label class="form-label">Company <span class="bz-optional">(optional)</span></label>
+  .bz-optional {
+    color: color("ink-muted");
+    font-weight: var(--font-weight-normal);
+  }
+
+  // Row below the field: hint on the left, character counter on the right.
+  .bz-field-meta {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: space(4);
+
+    > .form-text {
+      margin-top: 0;
+    }
+  }
+
+  .bz-counter {
+    flex-shrink: 0;
+    margin-left: auto;
+    color: color("ink-muted");
+    font-size: var(--text-sm);
+    font-variant-numeric: tabular-nums;
+  }
+
+  // Field with a button on the right (e.g. show password).
+  .bz-input-action {
+    position: relative;
+
+    > .form-control {
+      padding-right: space(12);
+    }
+
+    > .bz-icon-button {
+      position: absolute;
+      top: 50%;
+      right: space(2);
+      transform: translateY(-50%);
+    }
+  }
+}

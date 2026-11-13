@@ -1,0 +1,115 @@
+// Ported from Breeze for Tailwind – same classes in both variants.
+/* ==========================================================================
+   Radio card – selection row with a radio, description and an optional action
+   For options with context (address, account type, shipping). The action
+   is a separate button outside the label and does not change the selection.
+
+   <fieldset class="vstack gap-3">
+     <legend class="bz-label">Delivery address</legend>
+     <div class="bz-radio-card">
+       <label class="bz-radio-card__main">
+         <input type="radio" class="radio" name="address" value="home" checked>
+         <span class="bz-choice__body">
+           <span class="bz-choice__label">Home</span>
+           <span class="bz-choice__description">Hlavná 14, 811 01 Bratislava</span>
+         </span>
+       </label>
+       <button type="button" class="bz-radio-card__action">Edit</button>
+     </div>
+   </fieldset>
+   ========================================================================== */
+
+@layer custom {
+  .bz-choice__body {
+    display: flex;
+    flex-direction: column;
+    gap: calc(var(--spacing) * 0.5);
+    min-width: 0;
+  }
+
+  .bz-choice__label {
+    color: var(--color-ink);
+    font-size: var(--text-base);
+    line-height: var(--text-base--line-height);
+  }
+
+  .bz-choice__description {
+    color: var(--color-ink-muted);
+    font-size: var(--text-sm);
+    line-height: var(--text-sm--line-height);
+  }
+
+
+  .bz-radio-card {
+    position: relative;
+    display: flex;
+    align-items: center;
+    border-radius: var(--radius-xl);
+    transition: background-color 150ms var(--default-transition-timing-function);
+  }
+
+  .bz-radio-card:hover {
+    background-color: var(--color-surface-sunken);
+  }
+
+  .bz-radio-card:has(input:checked),
+  .bz-radio-card:has(input:checked):hover {
+    background-color: var(--color-primary-soft);
+  }
+
+  .bz-radio-card:has(input:disabled) {
+    opacity: 0.45;
+  }
+
+  .bz-radio-card:has(input:disabled):hover {
+    background-color: transparent;
+  }
+
+  .bz-radio-card__main {
+    display: flex;
+    flex: 1;
+    align-items: center;
+    gap: calc(var(--spacing) * 4);
+    min-width: 0;
+    padding: calc(var(--spacing) * 4) calc(var(--spacing) * 5);
+    cursor: pointer;
+  }
+
+  .bz-radio-card__main:has(input:disabled) {
+    cursor: not-allowed;
+  }
+
+  .bz-radio-card__main > input:disabled {
+    opacity: 1;
+  }
+
+  .bz-radio-card__action {
+    flex-shrink: 0;
+    margin: 0 calc(var(--spacing) * 3) 0 0;
+    padding: calc(var(--spacing) * 2);
+    border: 0;
+    border-radius: var(--radius-md);
+    background: none;
+    color: var(--color-link);
+    font-family: inherit;
+    font-size: var(--text-base);
+    font-weight: var(--font-weight-medium);
+    line-height: var(--text-base--line-height);
+    text-underline-offset: 4px;
+    cursor: pointer;
+  }
+
+  .bz-radio-card__action:hover {
+    text-decoration-line: underline;
+  }
+
+  .bz-radio-card__action:focus-visible {
+    outline: var(--focus-ring-width) solid var(--color-focus-ring);
+    outline-offset: var(--focus-ring-offset);
+  }
+
+  .bz-radio-card__action:disabled {
+    cursor: not-allowed;
+    text-decoration-line: none;
+  }
+}

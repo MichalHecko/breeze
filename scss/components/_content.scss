@@ -1,0 +1,149 @@
+// =============================================================================
+// Cards, badges, alerts, tables, navigation – fine-tuning per Breeze
+// Tokens do most of the work (abstracts/_bootstrap-config.scss); the rest is here.
+// =============================================================================
+
+@use "../abstracts" as *;
+
+@layer custom {
+  // Card: white, no border, md shadow (Bootstrap 6 .shadow).
+  .card {
+    box-shadow: var(--card-box-shadow);
+  }
+
+  .card-title {
+    margin: 0;
+    color: color("ink");
+    font-family: var(--font-display);
+    font-size: var(--text-xl);
+    font-weight: var(--font-weight-semibold);
+    line-height: var(--text-xl--line-height);
+  }
+
+  .card-subtitle {
+    margin-top: calc(var(--card-body-gap) * -1 + #{space(1)});
+    color: color("ink-muted");
+    font-size: var(--text-sm);
+    line-height: var(--text-sm--line-height);
+  }
+
+  // Card footer: line aligned with the content, actions left and right.
+  .card-footer {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: space(3);
+    margin-inline: var(--card-spacer-x);
+    padding: space(8) 0 var(--card-spacer-y);
+    border-top: 1px solid color("line");
+    background-color: transparent;
+  }
+
+  // Recessed group inside a card or modal (Breeze Card tone="sunken").
+  .card-subtle {
+    --card-bg: #{color("surface-sunken")};
+    --card-border-radius: var(--radius-3xl);
+    --card-box-shadow: none;
+    --card-spacer-y: #{space(6)};
+    --card-spacer-x: #{space(8)};
+    --card-body-gap: #{space(4)};
+
+    .card-title {
+      font-family: var(--font-sans);
+      font-size: var(--text-base);
+      line-height: var(--text-base--line-height);
+    }
+  }
+
+  // Badge: 24 px, letter-spaced; with a theme color, soft background and colored text.
+  .badge {
+    min-height: space(6);
+    letter-spacing: var(--tracking-wide);
+  }
+
+  .badge[class*="theme-"] {
+    border-color: transparent;
+    background-color: var(--theme-bg-subtle);
+    color: var(--theme-fg);
+  }
+
+  // Alert: no border, sm text, base heading.
+  .alert {
+    border-color: transparent;
+    font-size: var(--text-sm);
+    line-height: var(--text-sm--line-height);
+  }
+
+  .alert-heading {
+    margin: 0;
+    color: inherit;
+    font-family: var(--font-sans);
+    font-size: var(--text-base);
+    font-weight: var(--font-weight-semibold);
+    line-height: var(--text-base--line-height);
+  }
+
+  .alert ul {
+    margin: space(1) 0 0;
+    padding-left: space(5);
+  }
+
+  .alert a {
+    color: inherit;
+    font-weight: var(--font-weight-medium);
+  }
+
+  // Table without vertical lines; 16 px between columns, no padding at the edges.
+  .table {
+    --table-cell-padding-x: #{space(2)};
+    font-variant-numeric: tabular-nums;
+
+    :is(th, td):first-child {
+      padding-left: 0;
+    }
+
+    :is(th, td):last-child {
+      padding-right: 0;
+    }
+
+    > thead th {
+      padding-top: 0;
+      padding-bottom: space(3);
+      color: color("ink-muted");
+      font-size: var(--text-sm);
+      font-weight: var(--font-weight-semibold);
+      line-height: var(--text-sm--line-height);
+      vertical-align: bottom;
+    }
+
+    > tfoot > tr > * {
+      padding-bottom: 0;
+      border-bottom: 0;
+      font-weight: var(--font-weight-semibold);
+    }
+  }
+
+  // Total amount in the table footer.
+  .bz-table-total {
+    font-family: var(--font-display);
+    font-size: var(--text-lg);
+    line-height: var(--text-lg--line-height);
+  }
+
+  // Navigation as segments (.nav.nav-pills): 40 px items, white active item.
+  .nav-pills .nav-link {
+    min-height: space(10);
+    padding-inline: space(4);
+    border: 1px solid transparent;
+    font-size: var(--text-sm);
+    font-weight: var(--font-weight-medium);
+  }
+
+  .nav-pills .nav-link:is(.active, [aria-current="page"]) {
+    border-color: color("line");
+    background-color: color("surface");
+    color: color("ink");
+    box-shadow: var(--shadow-xs);
+  }
+}

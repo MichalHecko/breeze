@@ -1,0 +1,53 @@
+// Ported from Breeze for Tailwind – same classes in both variants.
+/* ==========================================================================
+   Steps – numbered step indicator (checkout, wizard)
+   Mark the current step with aria-current="step". Steps before it are
+   shown as done, steps after it as upcoming. CSS adds the numbers.
+
+   <ol class="bz-steps" aria-label="Order steps">
+     <li class="bz-steps__item">Cart</li>
+     <li class="bz-steps__item" aria-current="step">Delivery</li>
+     <li class="bz-steps__item">Payment</li>
+   </ol>
+   ========================================================================== */
+
+@layer custom {
+  .bz-steps {
+    display: flex;
+    flex-wrap: wrap;
+    gap: calc(var(--spacing) * 2) calc(var(--spacing) * 10);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    counter-reset: bz-step;
+  }
+
+  /* Upcoming step */
+  .bz-steps__item {
+    display: flex;
+    gap: calc(var(--spacing) * 1.5);
+    padding-bottom: calc(var(--spacing) * 2);
+    border-bottom: 2px solid transparent;
+    color: var(--color-ink-muted);
+    font-family: var(--font-display);
+    font-size: var(--text-lg);
+    font-weight: var(--font-weight-semibold);
+    line-height: var(--text-lg--line-height);
+    counter-increment: bz-step;
+  }
+
+  .bz-steps__item::before {
+    content: counter(bz-step) ".";
+  }
+
+  /* Completed step */
+  .bz-steps__item:has(~ .bz-steps__item[aria-current="step"]) {
+    color: var(--color-ink);
+  }
+
+  /* Current step – the state is carried by the underline too, not just color. */
+  .bz-steps__item[aria-current="step"] {
+    border-bottom-color: var(--color-primary);
+    color: var(--color-primary);
+  }
+}

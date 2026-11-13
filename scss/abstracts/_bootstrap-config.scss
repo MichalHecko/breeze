@@ -1,0 +1,301 @@
+// =============================================================================
+// Bootstrap 6 configuration from Breeze tokens
+//
+// The maps are passed to `@use "bootstrap/scss/bootstrap" with (…)` in
+// breeze.scss. Bootstrap merges them with its defaults (the defaults()
+// function), so only what Breeze changes is here.
+//
+// Never use colors directly: always via color("…") = var(--color-…), so they
+// can be changed at runtime and switch with the theme (light-dark()).
+// Emits no CSS.
+// =============================================================================
+
+@use "sass:list";
+@use "sass:map";
+@use "breeze" as v;
+
+// Breakpoints, containers, grid, gutters and spacers are the Bootstrap 6
+// defaults – the Breeze design system uses them as its base, so nothing overrides them here.
+
+// -----------------------------------------------------------------------------
+// Theme colors (.theme-primary, .theme-success …)
+// -----------------------------------------------------------------------------
+
+@function _theme($main, $soft, $hover: $main, $contrast: v.color("on-primary")) {
+  @return (
+    "base": v.color($main),
+    "fg": v.color($main),
+    "fg-emphasis": v.color($hover),
+    "bg": v.color($main),
+    "bg-subtle": $soft,
+    "bg-muted": color-mix(in oklch, #{$soft}, #{v.color($main)} 12%),
+    "border": v.color($main),
+    "focus-ring": v.color("focus-ring"),
+    "contrast": $contrast,
+  );
+}
+
+$theme-colors: (
+  "primary": _theme("primary", v.color("primary-soft"), "primary-hover"),
+  "success": _theme("success", v.color("success-soft")),
+  "warning": _theme("warning", v.color("warning-soft")),
+  "danger": _theme("danger", v.color("danger-soft")),
+  "info": _theme("dusk", color-mix(in oklch, #{v.color("dusk")} 14%, #{v.color("surface")}), "dusk", v.color("surface")),
+  "accent": _theme("dusk", color-mix(in oklch, #{v.color("dusk")} 14%, #{v.color("surface")}), "dusk", v.color("surface")),
+  // Neutral: secondary button, neutral badge.
+  "secondary": (
+    "base": v.color("line-strong"),
+    "fg": v.color("ink"),
+    "fg-emphasis": v.color("ink"),
+    "bg": v.color("surface-sunken"),
+    "bg-subtle": v.color("surface-sunken"),
+    "bg-muted": v.color("line"),
+    "border": v.color("line"),
+    "focus-ring": v.color("focus-ring"),
+    "contrast": v.color("ink"),
+  ),
+  "inverse": (
+    "base": v.color("ink"),
+    "fg": v.color("ink"),
+    "fg-emphasis": v.color("ink"),
+    "bg": v.color("ink"),
+    "bg-subtle": v.color("surface-sunken"),
+    "bg-muted": v.color("line"),
+    "border": v.color("ink"),
+    "focus-ring": v.color("focus-ring"),
+    "contrast": v.color("surface"),
+  ),
+);
+
+// Backgrounds (.bg-*). body = cards and fields; the page uses canvas (base/_page).
+$theme-bgs: (
+  "body": v.color("surface"),
+  "1": v.color("canvas"),
+  "2": v.color("surface-sunken"),
+  "3": v.color("line"),
+  "4": v.color("line-strong"),
+  "canvas": v.color("canvas"),
+  "surface": v.color("surface"),
+  "sunken": v.color("surface-sunken"),
+  "dusk": v.color("dusk"),
+  "peach": v.color("peach"),
+);
+
+// Text colors (.fg-*).
+$theme-fgs: (
+  "body": v.color("ink"),
+  "1": v.color("ink"),
+  "2": v.color("ink-muted"),
+  "3": v.color("ink-muted"),
+  "4": v.color("line-strong"),
+  "muted": v.color("ink-muted"),
+);
+
+// Borders (.border-*).
+$theme-borders: (
+  "body": v.color("line"),
+  "muted": v.color("line"),
+  "subtle": v.color("line"),
+  "emphasized": v.color("line-strong"),
+  "strong": v.color("line-strong"),
+);
+
+// -----------------------------------------------------------------------------
+// Global tokens (:root)
+// -----------------------------------------------------------------------------
+
+// Breeze tokens under the same names as in Breeze for Tailwind.
+$breeze-tokens: (
+  --font-sans: v.$font-sans,
+  --font-display: v.$font-display,
+  --spacing: v.$spacing,
+  --tracking-tight: -.025em,
+  --tracking-wide: .025em,
+  --default-transition-timing-function: cubic-bezier(.4, 0, .2, 1),
+);
+
+@each $name, $_ in v.$colors {
+  $breeze-tokens: map.set($breeze-tokens, --color-#{$name}, v.ld($name));
+}
+$breeze-tokens: map.set($breeze-tokens, --color-link, var(--color-primary));
+
+@each $name, $value in v.$radii {
+  $breeze-tokens: map.set($breeze-tokens, --radius-#{$name}, $value);
+}
+
+@each $name, $pair in v.$text {
+  $breeze-tokens: map.set($breeze-tokens, --text-#{$name}, list.nth($pair, 1));
+  $breeze-tokens: map.set($breeze-tokens, --text-#{$name}--line-height, list.nth($pair, 2));
+}
+
+@each $name, $value in v.$shadows {
+  $breeze-tokens: map.set($breeze-tokens, --shadow-#{$name}, $value);
+}
+
+$root-tokens: map.merge($breeze-tokens, (
+  --body-font-family: var(--font-sans),
+  --heading-color: v.color("ink"),
+  --link-color: v.color("link"),
+  --link-hover-color: v.color("primary-hover"),
+  --link-underline-offset: 4px,
+  --border-color: v.color("line"),
+  // Focus for buttons, links and segments: the Bootstrap 6 focus ring
+  // (3 px, 1 px offset) in the Breeze focus color. Fields keep their glow.
+  --focus-ring-color: v.color("focus-ring"),
+  --control-disabled-opacity: .45,
+  // Breeze form overrides of the Bootstrap 6 base (38 px): buttons md 44 px,
+  // sm 36 px, lg 52 px; fields 48 px (form-control).
+  --btn-input-gap: v.space(2),
+  --btn-input-min-height: v.space(11),
+  --btn-input-padding-x: v.space(6),
+  --btn-input-sm-gap: v.space(2),
+  --btn-input-sm-min-height: v.space(9),
+  --btn-input-sm-padding-x: v.space(4),
+  --btn-input-sm-font-size: var(--text-sm),
+  --btn-input-sm-line-height: var(--text-sm--line-height),
+  --btn-input-lg-gap: v.space(2),
+  --btn-input-lg-min-height: v.space(13),
+  --btn-input-lg-padding-x: v.space(8),
+  --btn-input-lg-font-size: var(--text-base),
+  --btn-input-lg-line-height: var(--text-base--line-height),
+));
+
+// -----------------------------------------------------------------------------
+// Component tokens
+// -----------------------------------------------------------------------------
+
+// The button radius stays the Bootstrap 6 default (--radius-5, large --radius-7):
+// a deliberate deviation from the Breeze pill shape.
+$button-tokens: (
+  --btn-font-weight: var(--font-weight-medium),
+  --btn-disabled-opacity: .45,
+);
+
+$select-arrow-light: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none'%3E%3Cpath d='M4 6l4 4 4-4' stroke='%235a667b' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+$select-arrow-dark: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none'%3E%3Cpath d='M4 6l4 4 4-4' stroke='%239ba8bd' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+
+// The field radius stays the Bootstrap 6 default (--radius-5, large --radius-7),
+// the same as buttons: a deliberate deviation from Breeze (rounded-xl).
+$form-control-tokens: (
+  --control-min-height: v.space(12),
+  // 48 px in total, as in Breeze: 24 px line + 2 × 11 px padding + 2 × 1 px border.
+  --control-padding-y: .6875rem,
+  --control-padding-x: v.space(4),
+  --control-fg: v.color("ink"),
+  --control-bg: v.color("surface"),
+  --control-border-color: v.color("line-strong"),
+  --control-box-shadow: var(--shadow-xs),
+  --control-placeholder-color: v.color("ink-muted"),
+  --control-select-bg: $select-arrow-light,
+  --control-select-bg-dark: $select-arrow-dark,
+  --control-select-bg-position: right v.space(4) center,
+  --control-select-bg-size: 1rem 1rem,
+);
+
+$check-tokens: (
+  --check-border-color: v.color("line-strong"),
+  --check-bg: v.color("surface"),
+);
+
+$radio-tokens: (
+  --radio-size: v.space(5.5),
+  --radio-border-color: v.color("line-strong"),
+  --radio-bg: v.color("surface"),
+);
+
+$switch-tokens: (
+  --switch-height: v.space(6),
+  --switch-width: v.space(11),
+  --switch-padding: v.space(.5),
+  --switch-border-width: 0px,
+  --switch-bg: v.color("line-strong"),
+  --switch-indicator-bg: v.color("surface"),
+  --switch-checked-indicator-bg: v.color("surface"),
+);
+
+$form-label-tokens: (
+  --label-margin-bottom: v.space(2),
+  --label-font-size: var(--text-sm),
+  --label-font-weight: var(--font-weight-semibold),
+  --label-color: v.color("ink"),
+);
+
+$form-text-tokens: (
+  --form-text-margin-top: v.space(2),
+  --form-text-font-size: var(--text-sm),
+  --form-text-color: v.color("ink-muted"),
+);
+
+$card-tokens: (
+  --card-spacer-y: v.space(8),
+  --card-spacer-x: clamp(#{v.space(5)}, 4vw, #{v.space(10)}),
+  --card-border-width: 0px,
+  --card-border-radius: var(--radius-2xl),
+  --card-box-shadow: var(--shadow-md),
+  --card-cap-bg: transparent,
+  --card-bg: v.color("surface"),
+  --card-body-gap: v.space(6),
+);
+
+$badge-tokens: (
+  --badge-padding-x: v.space(2.5),
+  --badge-padding-y: v.space(1),
+  --badge-font-size: var(--text-xs),
+  --badge-bg: v.color("surface-sunken"),
+  --badge-color: v.color("ink-muted"),
+  --badge-border-radius: var(--radius-pill),
+);
+
+$alert-tokens: (
+  --alert-gap: v.space(3),
+  --alert-bg: v.color("surface-sunken"),
+  --alert-padding-x: v.space(4),
+  --alert-padding-y: v.space(4),
+  --alert-border-color: transparent,
+  --alert-border-radius: var(--radius-xl),
+);
+
+$progress-tokens: (
+  --progress-height: v.space(1),
+  --progress-bg: v.color("line"),
+  --progress-border-radius: var(--radius-pill),
+  --progress-box-shadow: none,
+  --progress-bar-bg: v.color("primary"),
+);
+
+$strength-tokens: (
+  --strength-height: v.space(1),
+  --strength-bg: v.color("line"),
+  --strength-color: v.color("line"),
+  --strength-good-color: v.color("primary"),
+);
+
+$table-tokens: (
+  --table-cell-padding-y: v.space(4),
+  --table-cell-padding-x: v.space(4),
+  --table-bg: transparent,
+  --table-border-color: v.color("line"),
+);
+
+$nav-tokens: (
+  --nav-link-color: v.color("ink-muted"),
+  --nav-link-hover-color: v.color("ink"),
+  --nav-link-hover-bg: transparent,
+  --nav-link-active-color: v.color("ink"),
+);
+
+// Navigation as segments: surface-sunken track, white active item.
+$nav-pills-tokens: (
+  --nav-pills-bg: v.color("surface-sunken"),
+  --nav-pills-padding: v.space(1),
+  --nav-pills-border-radius: var(--radius-2xl),
+  --nav-pills-link-active-color: v.color("ink"),
+  --nav-pills-link-active-bg: v.color("surface"),
+  --nav-pills-link-border-radius: var(--radius-xl),
+);
+
+$stepper-tokens: (
+  --stepper-bg: v.color("line"),
+  --stepper-active-color: v.color("on-primary"),
+  --stepper-active-bg: v.color("primary"),
+);
